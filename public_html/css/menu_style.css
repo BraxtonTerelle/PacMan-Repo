@@ -1,0 +1,39 @@
+#menuTitleDiv {
+
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 25%;
+    text-align: center;
+    background-color: #005689;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.7em;
+
+}
+
+#menuButtons {
+    position: fixed;
+    top: 25%;
+    left: 0%;
+    height: 75%;
+    width: 100%;
+    text-align: center;
+    background-color: #d5eeff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+
+input {
+    margin: 10px;
+    font-size: 2em;
+}
+
+html {
+    font-family: 'Courier New', Courier, monospace;
+}
