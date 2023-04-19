@@ -49,6 +49,7 @@ input {
 
 label, input {
     font-size: 2em;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 h3 {
@@ -58,3 +59,5 @@ h3 {
 html {
     font-family: 'Courier New', Courier, monospace;
 }
+
+
