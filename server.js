@@ -4,7 +4,7 @@ const port = 3000;
 const mongoose = require("mongoose");
 const mongoDB = "mongodb://127.0.0.1:27017/pacman";
 
-app.use(express.static("public_html"));
+app.use(express.static("./public_html/html"));
 app.use(express.json());
 
 /*
