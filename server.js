@@ -144,6 +144,11 @@ async function main() {
 /*
 main()
   .then(() => {
+    app.get("/", (req, res) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "text/plain");
+      res.end();
+    });
     app.listen(port, (error) => {
       if (error) {
         console.log("Error listening on port", port);

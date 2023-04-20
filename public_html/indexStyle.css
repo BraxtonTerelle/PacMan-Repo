@@ -1,0 +1,93 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+body {
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  color: red;
+  font-family: Arial;
+  font-weight: bold;
+}
+
+#container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 725px;
+  height: 725px;
+  border: 2px solid black;
+  margin-left: auto;
+  margin-right: auto;
+  align-content: flex-start;
+}
+
+.blinky {
+  background: url("images/Blinky_Icon.png");
+  width: 25px;
+  height: 25px;
+}
+
+.pinky {
+  background: url("images/Pinky_Icon.png");
+  width: 25px;
+  height: 25px;
+}
+
+.inky {
+  background: url("images/Inky_Icon.png");
+  width: 25px;
+  height: 25px;
+}
+
+.clyde {
+  background: url("images/Clyde_Icon.png");
+  width: 25px;
+  height: 25px;
+}
+
+.ghostPrison {
+  background: url("images/Prison_Icon.png");
+  width: 25px;
+  height: 25px;
+}
+.pacMan {
+  background: url("images/Pacman_Icon.png");
+  width: 25px;
+  height: 25px;
+}
+
+.gridWall {
+  background-color: aqua;
+  width: 25px;
+  height: 25px;
+}
+
+.gridCushion {
+  background-color: grey;
+  width: 25px;
+  height: 25px;
+}
+
+.eatablePellet {
+  background-color: blue;
+  width: 20px;
+  height: 20px;
+  border-width: 10px;
+  box-sizing: border-box;
+}
+
+.availablePath {
+  background-color: grey;
+  width: 25px;
+  height: 25px;
+}
+
+.powerPellet {
+  background-color: blue;
+  width: 20px;
+  height: 20px;
+}
