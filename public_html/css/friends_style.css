@@ -1,0 +1,79 @@
+#friendsTitleDiv {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 25%;
+  text-align: center;
+  background-color: #005689;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.7em;
+}
+
+a {
+  color: #ff895d;
+}
+
+#fMenuButton {
+  position: fixed;
+  top: 1%;
+  left: 1%;
+  color: #ff895d;
+  border: 2px solid #ff895d;
+  padding: 4px;
+}
+
+#yourFriendsDiv {
+  position: fixed;
+  top: 25%;
+  left: 0%;
+  height: 75%;
+  width: 50%;
+  text-align: center;
+  background-color: #d5eeff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#addFriendsDiv {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  height: 75%;
+  width: 50%;
+  text-align: center;
+  background-color: #d5eeff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#friendsListDiv {
+  width: 60%;
+  height: 75%;
+  border: 2px solid #ff895d;
+}
+
+input {
+  margin: 10px;
+}
+
+label,
+input {
+  font-size: 2em;
+  font-family: "Courier New", Courier, monospace;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+html {
+  font-family: "Courier New", Courier, monospace;
+}
