@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./css/friends_style.css">
-    <script src=""></script>
+    <script src="./js/friends_functionality.js"></script>
     <title>Pac-Man</title>
 </head>
 <body id="friendsBody">
@@ -27,7 +27,8 @@
         <label for="friendUser">Username:</label>
         <input type="text" name="friendUser" id="friendUser">
         <br>
-        <input type="button" value="Add User" id="addFriendButton">
+        <input type="button" value="Add User" id="addFriendButton" onclick="addFriend();">
+        <div id="msg"></div>
 
     </div>
 

@@ -1,59 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="./css/index_style.css" />
-    <script
-      type="application/javascript"
-      src="./js/index_functionality.js"
-    ></script>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./css/index_style.css">
+    <script type="application/javascript" src="./js/index_functionality.js"></script>
     <title>Pac-Man</title>
-  </head>
-  <body id="loginBody">
+</head>
+<body id="loginBody">
     <div id="titleDiv">
-      <h1>Pac-Man Log-In</h1>
+        <h1>Pac-Man Log-In</h1>
     </div>
 
     <div id="userFormDiv">
-      <h3>Log In</h3>
+        <h3>Log In</h3>
 
-      <form action="/" method="POST" id="retUserForm">
-        <label for="oldUser">Username</label>
-        <input type="text" name="oldUser" id="oldUser" />
-        <br />
-        <label for="oldPass">Password</label>
-        <input type="password" name="oldPass" id="oldPass" />
-        <br />
-        <input
-          type="button"
-          name="login"
-          id="login"
-          value="Log In"
-          onclick="userLogin()"
-        />
+        <form action="/" method="POST" id="retUserForm">
 
-        <div id="invalidMsg"></div>
-      </form>
+            <label for="oldUser">Username</label>
+            <input type="text" name="oldUser" id="oldUser">
+            <br>
+            <label for="oldPass">Password</label>
+            <input type="password" name="oldPass" id="oldPass">
+            <br>
+            <input type="button" name="login" id="login" value="Log In" onclick="userLogin()">
+
+            <div id="invalidMsg"></div>
+
+        </form>
     </div>
 
     <div id="newFormDiv">
-      <h3>Create Account</h3>
+        <h3>Create Account</h3>
 
-      <form action="/" method="POST" id="newUserForm">
-        <label for="newUser">Username</label>
-        <input type="text" name="newUser" id="newUser" />
-        <br />
-        <label for="newPass">Password</label>
-        <input type="password" name="newPass" id="newPass" />
-        <br />
-        <input
-          type="button"
-          name="createAcc"
-          id="createAcc"
-          value="Create Account"
-          onclick="createUser()"
-        />
-      </form>
+        <form action="/" method="POST" id="newUserForm">
+
+            <label for="newUser">Username</label>
+            <input type="text" name="newUser" id="newUser">
+            <br>
+            <label for="newPass">Password</label>
+            <input type="password" name="newPass" id="newPass">
+            <br>
+            <input type="button" name="createAcc" id="createAcc" value="Create Account" onclick="createUser()">
+
+
+        </form>
     </div>
-  </body>
+
+</body>
 </html>
