@@ -9,46 +9,46 @@
 
 const gridElements = [];
 var gridLayout = [
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-  3, 3, 3, 3, 3, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 3, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1, 3, 0,
-  3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3,
-  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3,
-  3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1, 1, 3, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 3, 0, 3, 3,
-  3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1, 1, 3,
-  0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3,
-  1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 0, 3, 1, 3, 0, 0, 3, 1, 3, 0, 3, 1, 1,
-  3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0,
-  3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3,
-  3, 3, 0, 3, 3, 3, 3, 0, 3, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3,
-  3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0,
-  3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 3, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3,
-  3, 3, 3, 3, 3, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3, 3, 3, 3,
-  3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 2, 2, 2, 2, 2, 2,
-  3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3,
-  3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 3, 0, 3, 3, 3, 0, 3, 3, 3, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 3, 3, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1,
-  3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3,
-  0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0,
-  3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 1,
-  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-  3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1,
+  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1,
+  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1,
+  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1,
+  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
+  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 0, 3, 1, 3, 0, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
+  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1,
+  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
+  1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
+  3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
+  1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
+  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 3, 3, 3, 0, 3, 1,
+  1, 3, 0, 3, 1, 3, 0, 3, 1, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 1, 3, 0, 3, 1, 3, 0, 3, 1,
+  1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 1, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 1,
+  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
+  1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 ];
+
 var pacmanIndex = 652;
 var width = 29;
 var pinkyFreed = false;
 var blinkyFreed = false;
 var clydeFreed = false;
 var inkyFreed = false;
+var pacmanDirection = -1;
+const PACMAN_SPEED = 200;
+const GHOST_SPEED = 500;
 function main() {
   console.log("Main running");
   buildWalls();
@@ -65,6 +65,7 @@ function idlyMoveGhost(offset, startIndex, spriteToMove, axis) {
   } else {
     direction = "down";
   }
+
   setInterval(() => {
     gridElements[myIndex].classList.remove(spriteToMove);
     if (direction == "down") {
@@ -94,7 +95,7 @@ function idlyMoveGhost(offset, startIndex, spriteToMove, axis) {
     }
     gridElements[myIndex].classList.add(spriteToMove);
     spacesMoved++;
-  }, 700);
+  }, PACMAN_SPEED);
 }
 
 function spawnSprites() {
@@ -128,6 +129,50 @@ function buildWalls() {
   }
 }
 
+function checkLeft(index) {
+  if (
+    index % width !== 0 &&
+    !gridElements[index - 1].classList.contains("gridWall") &&
+    !gridElements[index - 1].classList.contains("ghostPrison") &&
+    !gridElements[index - 1].classList.contains("gridCushion")
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function checkRight(index) {
+  if (
+    index % width !== 0 &&
+    !gridElements[index + 1].classList.contains("gridWall") &&
+    !gridElements[index + 1].classList.contains("ghostPrison") &&
+    !gridElements[index + 1].classList.contains("gridCushion")
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function checkUp(index){
+  if( index - width >= 0 &&
+    !gridElements[index - width].classList.contains("gridWall") &&
+    !gridElements[index - width].classList.contains("ghostPrison") &&
+    !gridElements[index - width].classList.contains("gridCushion")){
+      return true;
+    }
+    return false;
+}
+
+function checkDown(index){
+if(index + width < width * width &&
+  !gridElements[index + width].classList.contains("gridWall") &&
+  !gridElements[index + width].classList.contains("ghostPrison") &&
+  !gridElements[index + width].classList.contains("gridCushion")){
+    return true;
+  }
+  return false;
+}
+
 /**
  *
  * @param {*} direction: left, right, up, down
@@ -136,39 +181,52 @@ function buildWalls() {
  */
 function moveSprite(direction, index) {
   if (direction === "left") {
-    if (
-      index % width !== 0 &&
-      !gridElements[index - 1].classList.contains("gridWall") &&
-      !gridElements[index - 1].classList.contains("ghostPrison") &&
-      !gridElements[index - 1].classList.contains("gridCushion")
-    )
-      return index - 1;
+    if (checkLeft(index)) return index - 1;
   } else if (direction == "right") {
-    if (
-      pacmanIndex % width < width - 1 &&
-      !gridElements[index + 1].classList.contains("gridWall") &&
-      !gridElements[index + 1].classList.contains("ghostPrison") &&
-      !gridElements[index + 1].classList.contains("gridCushion")
-    )
-      return index + 1;
+    if (checkRight(index)) return index + 1;
   } else if (direction == "up") {
     if (
-      index - width >= 0 &&
-      !gridElements[index - width].classList.contains("gridWall") &&
-      !gridElements[index - width].classList.contains("ghostPrison") &&
-      !gridElements[index - width].classList.contains("gridCushion")
+     checkUp(index)
     )
       return index - width;
   } else if (direction == "down") {
     if (
-      index + width < width * width &&
-      !gridElements[index + width].classList.contains("gridWall") &&
-      !gridElements[index + width].classList.contains("ghostPrison") &&
-      !gridElements[index + width].classList.contains("gridCushion")
+      checkDown(index)
     )
       return index + width;
   }
   return index;
+}
+
+function loopHelper(direction) {
+  gridElements[pacmanIndex].classList.remove("pacMan");
+  if (direction == 0) {
+    pacmanIndex = moveSprite("up", pacmanIndex);
+  } else if (direction == 1) {
+    pacmanIndex = moveSprite("right", pacmanIndex);
+    if (gridElements[pacmanIndex] === gridElements[519]) {
+      pacmanIndex = 494;
+    }
+  } else if (direction == 2) {
+    pacmanIndex = moveSprite("down", pacmanIndex);
+  } else {
+    pacmanIndex = moveSprite("left", pacmanIndex);
+    if (gridElements[pacmanIndex] === gridElements[494]) {
+      pacmanIndex = 519;
+    }
+  }
+  gridElements[pacmanIndex].classList.add("pacMan");
+}
+
+function loop(direction) {
+  loopHelper(direction);
+  let moveInterval = setInterval(() => {
+    if (direction != pacmanDirection) {
+      clearInterval(moveInterval);
+    } else {
+      loopHelper(direction);
+    }
+  }, PACMAN_SPEED);
 }
 
 /**
@@ -178,32 +236,24 @@ function moveSprite(direction, index) {
  * helper function that actually moves the pacman
  */
 function interpretMove(e) {
-  gridElements[pacmanIndex].classList.remove("pacMan");
   switch (e.keyCode) {
     case 37:
-      // Arrow left
-      pacmanIndex = moveSprite("left", pacmanIndex);
-      if (gridElements[pacmanIndex - 1] === gridElements[493]) {
-        pacmanIndex = 520;
-      }
+      pacmanDirection = 3;
+      loop(3);
       break;
     case 38:
-      // Arrow up
-      pacmanIndex = moveSprite("up", pacmanIndex);
+      pacmanDirection = 0;
+      loop(0);
       break;
     case 39:
-      // Arrow right
-      pacmanIndex = moveSprite("right", pacmanIndex);
-      if (gridElements[pacmanIndex - 1] === gridElements[519]) {
-        pacmanIndex = 494;
-      }
+      pacmanDirection = 1;
+      loop(1);
       break;
     case 40:
-      // Arrow down
-      pacmanIndex = moveSprite("down", pacmanIndex);
+      pacmanDirection = 2;
+      loop(2);
       break;
   }
-  gridElements[pacmanIndex].classList.add("pacMan");
 }
 document.addEventListener("keydown", interpretMove);
 

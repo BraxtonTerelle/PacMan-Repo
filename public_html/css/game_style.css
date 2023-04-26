@@ -53,6 +53,7 @@ html {
   top: 25%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 15px;
   align-content: flex-start;
 }
 
@@ -84,30 +85,35 @@ html {
   width: 25px;
   height: 25px;
   background: url("../images/Blinky_Icon.png");
+  background-color: grey;
 }
 
 .pinky {
   width: 25px;
   height: 25px;
   background: url("../images/Pinky_Icon.png");
+  background-color: grey;
 }
 
 .inky {
   width: 25px;
   height: 25px;
   background: url("../images/Inky_Icon.png");
+  background-color: grey;
 }
 
 .clyde {
   width: 25px;
   height: 25px;
   background: url("../images/Clyde_Icon.png");
+  background-color: grey;
 }
 
 .pacMan {
   width: 25px;
   height: 25px;
   background: url("../images/Pacman_Icon.png");
+  background-color: grey;
 }
 
 .pac-dot {
