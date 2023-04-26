@@ -48,7 +48,7 @@ html {
   display: flex;
   flex-wrap: wrap;
   width: 725px;
-  height: 725px;
+  height: 700px;
   border: 2px solid black;
   top: 25%;
   margin-left: auto;
@@ -72,7 +72,7 @@ html {
 .gridCushion {
   width: 25px;
   height: 25px;
-  background-color: grey;
+  background-color: blue;
 }
 
 .ghostPrison {

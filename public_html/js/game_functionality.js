@@ -18,21 +18,20 @@ var gridLayout = [
   1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
   1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1,
   1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
-  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 0, 3, 1, 3, 0, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
-  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
-  1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1,
+  1, 3, 0, 3, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 3, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 0, 3, 1,
   1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
   1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
+  3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3,
   3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-  1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1,
-  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
-  1, 3, 0, 3, 3, 3, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 3, 3, 3, 0, 3, 1,
-  1, 3, 0, 3, 1, 3, 0, 3, 1, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 1, 3, 0, 3, 1, 3, 0, 3, 1,
+  3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3,
+  1, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 2, 2, 0, 0, 0, 2, 2, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 1,
+  1, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 1,
+  1, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 1,
+  1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
+  1, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 1,
   1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1, 1, 1, 3, 0, 3, 1, 3, 0, 3, 1,
   1, 3, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 1, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 3, 1,
   1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1,
@@ -40,15 +39,20 @@ var gridLayout = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 ];
 
-var pacmanIndex = 652;
+/*
+ * Grab all 5 Gamepieces from server on startup to initialize defaults with.
+ * Send game end notification to server so he can destroy GamePieces and reset user array
+*/
+var pacmanIndex = 623;
 var width = 29;
 var pinkyFreed = false;
 var blinkyFreed = false;
 var clydeFreed = false;
 var inkyFreed = false;
 var pacmanDirection = -1;
-const PACMAN_SPEED = 200;
-const GHOST_SPEED = 500;
+const PACMAN_SPEED = 100;
+const GHOST_SPEED = 400;
+
 function main() {
   console.log("Main running");
   buildWalls();
@@ -69,42 +73,41 @@ function idlyMoveGhost(offset, startIndex, spriteToMove, axis) {
   setInterval(() => {
     gridElements[myIndex].classList.remove(spriteToMove);
     if (direction == "down") {
-      myIndex += offset;
-      if (spacesMoved == 2) {
-        spacesMoved = 0;
+      if (spacesMoved == 1) {
+        spacesMoved = -1;
         direction = "up";
       }
+      myIndex += offset;
     } else if (direction == "up") {
-      myIndex -= offset;
-      if (spacesMoved == 2) {
-        spacesMoved = 0;
+      if (spacesMoved == 1) {
+        spacesMoved = -1;
         direction = "down";
       }
+      myIndex -= offset;
     } else if (direction == "right") {
-      myIndex += offset;
-      if (spacesMoved == 2) {
-        spacesMoved = 0;
+      if (spacesMoved == 1) {
+        spacesMoved = -1;
         direction = "left";
       }
+      myIndex += offset;
     } else {
-      myIndex -= offset;
-      if (spacesMoved == 2) {
-        spacesMoved = 0;
+      if (spacesMoved == 1) {
+        spacesMoved = -1;
         direction = "right";
       }
+      myIndex -= offset;
     }
     gridElements[myIndex].classList.add(spriteToMove);
     spacesMoved++;
-  }, PACMAN_SPEED);
+  }, GHOST_SPEED);
 }
 
 function spawnSprites() {
   gridElements[pacmanIndex].classList.add("pacMan");
-
   idlyMoveGhost(width, 418, "pinky", "vertical");
   idlyMoveGhost(width, 420, "blinky", "vertical");
   idlyMoveGhost(width, 422, "inky", "vertical");
-  idlyMoveGhost(1, 534, "clyde", "horizontal");
+  idlyMoveGhost(1, 535, "clyde", "horizontal");
 }
 
 /**
@@ -209,7 +212,7 @@ function loopHelper(direction) {
     }
   } else if (direction == 2) {
     pacmanIndex = moveSprite("down", pacmanIndex);
-  } else {
+  } else{
     pacmanIndex = moveSprite("left", pacmanIndex);
     if (gridElements[pacmanIndex] === gridElements[494]) {
       pacmanIndex = 519;
@@ -236,22 +239,50 @@ function loop(direction) {
  * helper function that actually moves the pacman
  */
 function interpretMove(e) {
-  switch (e.keyCode) {
+    switch (e.keyCode) {
     case 37:
-      pacmanDirection = 3;
-      loop(3);
+      if(pacmanDirection!=3){
+        if(checkLeft(pacmanIndex)){
+          pacmanDirection = 3;
+          loop(3);
+        }
+        else{
+          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/2);
+        }
+      }
       break;
     case 38:
-      pacmanDirection = 0;
-      loop(0);
+      if(pacmanDirection!=0){
+        if(checkUp(pacmanIndex)){
+          pacmanDirection = 0;
+          loop(0);
+        }
+        else{
+          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/2);
+        }
+      }
       break;
     case 39:
-      pacmanDirection = 1;
-      loop(1);
+      if(pacmanDirection!=1){
+        if(checkRight(pacmanIndex)){
+          pacmanDirection = 1;
+          loop(1);
+        }
+        else{
+          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/2);
+        }
+      }
       break;
     case 40:
-      pacmanDirection = 2;
-      loop(2);
+      if(pacmanDirection!=2){
+        if(checkDown(pacmanIndex)){
+          pacmanDirection = 2;
+          loop(2);
+        }
+        else{
+          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/4);
+        }
+      }
       break;
   }
 }
