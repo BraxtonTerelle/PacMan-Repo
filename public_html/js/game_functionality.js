@@ -8,6 +8,8 @@
  */
 
 const gridElements = [];
+
+// 1's indicate walls, 3's indicate cushioning, 0's indicate pathway, and 2's indicate prison walls
 var gridLayout = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1,
@@ -42,23 +44,53 @@ var gridLayout = [
 /*
  * Grab all 5 Gamepieces from server on startup to initialize defaults with.
  * Send game end notification to server so he can destroy GamePieces and reset user array
-*/
-var pacmanIndex = 623;
-var width = 29;
-var pinkyFreed = false;
-var blinkyFreed = false;
-var clydeFreed = false;
-var inkyFreed = false;
-var pacmanDirection = -1;
-const PACMAN_SPEED = 100;
-const GHOST_SPEED = 400;
+ */
+var pacmanIndex;
+var width;
+var pinkyFreed;
+var blinkyFreed;
+var clydeFreed;
+var inkyFreed;
+var pacmanDirection;
+var pacmanSpeed;
+var ghostSpeed;
 
+
+/*
+ * Calls necessary helper functions in a logical order
+ */
 function main() {
   console.log("Main running");
+  initializeDefaults();
   buildWalls();
   spawnSprites();
 }
 
+
+/*
+ * Grab starting values from server and initialize them here before continuing on with game
+ */
+function initializeDefaults(){
+  pacmanIndex = 623;
+  width = 29;
+  pinkyFreed = false;
+  blinkyFreed = false;
+  clydeFreed = false;
+  inkyFreed = false;
+  pacmanDirection = -1;
+  pacmanSpeed = 100;
+  ghostSpeed = 400;
+}
+
+/*
+ * Idly move the ghosts in their prison cage until they're ready to
+ * be freed. Offset represents how many blocks needed to move the ghost.
+ * When moving in the y-direction this offset consists of a whole row of blocks,
+ * when moving in the x-direction it's just 1. startIndex is the beginning
+ * index the ghosts will be places at. spriteToMove is the class name of the ghost
+ * we're currently moving, and axis just tells us whether we're moving up/down or
+ * left/right
+ */
 function idlyMoveGhost(offset, startIndex, spriteToMove, axis) {
   gridElements[startIndex].classList.add(spriteToMove);
   var myIndex = startIndex;
@@ -70,6 +102,14 @@ function idlyMoveGhost(offset, startIndex, spriteToMove, axis) {
     direction = "down";
   }
 
+  /*
+   * Every x milliseconds, replace the image of the ghost at the current
+   * index with an empty pathway image, move the ghost 1 block in the
+   * desired direction, then add the ghost image to the block at the new index.
+   * This simulates movement, where adding/removing the images are done by manually
+   * updating the class list of the current block, which is represented as a div
+   * within the gridElements array.
+   */
   setInterval(() => {
     gridElements[myIndex].classList.remove(spriteToMove);
     if (direction == "down") {
@@ -99,9 +139,14 @@ function idlyMoveGhost(offset, startIndex, spriteToMove, axis) {
     }
     gridElements[myIndex].classList.add(spriteToMove);
     spacesMoved++;
-  }, GHOST_SPEED);
+  }, ghostSpeed);
 }
 
+/*
+ * Adds the ghosts and pacman sprites to the game and idly
+ * move the ghosts back and forth within their prison by calling
+ * a helper function
+ */
 function spawnSprites() {
   gridElements[pacmanIndex].classList.add("pacMan");
   idlyMoveGhost(width, 418, "pinky", "vertical");
@@ -112,7 +157,10 @@ function spawnSprites() {
 
 /**
  * Creates a div for each box in the grid, some of which are actual walls
- * and some that are invisble walls used as "padding" for better proportionality
+ * and some that are invisble walls used as "padding" for better proportionality.
+ * Manually defines the class each div is part of using the classList property of
+ * the div, and finally adds it to both the container div that houses the actual
+ * game, as well as the gridElements array for further manipulation during gameplay.
  */
 function buildWalls() {
   var mainContainer = document.getElementById("container");
@@ -132,6 +180,11 @@ function buildWalls() {
   }
 }
 
+/*
+ * Checks if the div to the left of the current sprite is
+ * anything but a wall and is available to move into. Returns
+ * true if so and false otherwise
+ */
 function checkLeft(index) {
   if (
     index % width !== 0 &&
@@ -144,6 +197,11 @@ function checkLeft(index) {
   return false;
 }
 
+/*
+ * Checks if the div to the right of the current sprite is
+ * anything but a wall and is available to move into. Returns
+ * true if so and false otherwise
+ */
 function checkRight(index) {
   if (
     index % width !== 0 &&
@@ -156,6 +214,11 @@ function checkRight(index) {
   return false;
 }
 
+/*
+ * Checks if the div above the current sprite is
+ * anything but a wall and is available to move into. Returns
+ * true if so and false otherwise
+ */
 function checkUp(index){
   if( index - width >= 0 &&
     !gridElements[index - width].classList.contains("gridWall") &&
@@ -166,6 +229,11 @@ function checkUp(index){
     return false;
 }
 
+/*
+ * Checks if the div below the current sprite is
+ * anything but a wall and is available to move into. Returns
+ * true if so and false otherwise
+ */
 function checkDown(index){
 if(index + width < width * width &&
   !gridElements[index + width].classList.contains("gridWall") &&
@@ -181,17 +249,13 @@ if(index + width < width * width &&
  * @param {*} direction: left, right, up, down
  * @param {*} index: where in grid the sprite is
  * @param {*} spriteToMove: Pacman or ghost class name
+ * 
  */
 function moveSprite(direction, index) {
   if (direction === "left") {
     if (checkLeft(index)) return index - 1;
   } else if (direction == "right") {
     if (checkRight(index)) return index + 1;
-  } else if (direction == "up") {
-    if (
-     checkUp(index)
-    )
-      return index - width;
   } else if (direction == "down") {
     if (
       checkDown(index)
@@ -201,35 +265,52 @@ function moveSprite(direction, index) {
   return index;
 }
 
-function loopHelper(direction) {
+/*
+ * Moves any sprite in a specified direction by first checking if it 
+ * can move in that direction, then updating its index accordingly.
+ * The function increment/decrements the index by 1 to move right/left,
+ * and increment/decrements by a whole row to move up/down. It also
+ * enables teleportation feature
+ */
+function moveSprite(direction) {
   gridElements[pacmanIndex].classList.remove("pacMan");
-  if (direction == 0) {
-    pacmanIndex = moveSprite("up", pacmanIndex);
-  } else if (direction == 1) {
-    pacmanIndex = moveSprite("right", pacmanIndex);
+  if (direction == 0 && checkUp(pacmanIndex)) {
+    pacmanIndex -=width;
+  } else if (direction == 1 && checkRight(pacmanIndex)) {
+    pacmanIndex+=1;
     if (gridElements[pacmanIndex] === gridElements[519]) {
       pacmanIndex = 494;
     }
-  } else if (direction == 2) {
-    pacmanIndex = moveSprite("down", pacmanIndex);
+  } else if (direction == 2 && checkDown(pacmanIndex)) {
+    pacmanIndex +=width;
   } else{
-    pacmanIndex = moveSprite("left", pacmanIndex);
+    if(checkLeft(pacmanIndex)){
+    pacmanIndex-=1;
     if (gridElements[pacmanIndex] === gridElements[494]) {
       pacmanIndex = 519;
+    }
     }
   }
   gridElements[pacmanIndex].classList.add("pacMan");
 }
 
+/*
+ * Enables pacman's movement by calling movePacman helper
+ * every x milliseconds as designated by the chosen pacman
+ * speed. This loop will run until a new direction key is
+ * pressed by the user, in which case it'll clear the current
+ * interval and create a new one with the new direction and
+ * start moving the pacman in that direction 
+ */
 function loop(direction) {
-  loopHelper(direction);
+  moveSprite(direction);
   let moveInterval = setInterval(() => {
     if (direction != pacmanDirection) {
       clearInterval(moveInterval);
     } else {
-      loopHelper(direction);
+      movePacman(direction);
     }
-  }, PACMAN_SPEED);
+  }, pacmanSpeed);
 }
 
 /**
@@ -247,7 +328,7 @@ function interpretMove(e) {
           loop(3);
         }
         else{
-          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/2);
+          setTimeout(()=>{interpretMove(e)}, pacmanSpeed/2);
         }
       }
       break;
@@ -258,7 +339,7 @@ function interpretMove(e) {
           loop(0);
         }
         else{
-          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/2);
+          setTimeout(()=>{interpretMove(e)}, pacmanSpeed/2);
         }
       }
       break;
@@ -269,7 +350,7 @@ function interpretMove(e) {
           loop(1);
         }
         else{
-          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/2);
+          setTimeout(()=>{interpretMove(e)}, pacmanSpeed/2);
         }
       }
       break;
@@ -280,7 +361,7 @@ function interpretMove(e) {
           loop(2);
         }
         else{
-          setTimeout(()=>{interpretMove(e)}, PACMAN_SPEED/4);
+          setTimeout(()=>{interpretMove(e)}, pacmanSpeed/4);
         }
       }
       break;
