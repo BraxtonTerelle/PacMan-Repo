@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
@@ -21,23 +22,90 @@ var userSchema = new Schema({
     password: String,
     friends: [String],
     highscore: Number,
+    pieces: [String]
 });
 User = mongoose.model("User", userSchema);
 
 var gamePieceSchema = new Schema({
-    type: String,
-    lives: Number,
-    speed: Number,
-    flashing: Boolean,
-    pelletseaten: Number,
+    type: String, // pacman vs ghost
+    lives: Number, // pacman init to 3
+    speed: Number, //slow 800 med 600 fast 400
+    flashing: Boolean, //init at false
+    intermediate: Boolean,
+    freed: Boolean,
+    pelletseaten: Number, // pellets eaten init to 0
 });
 GamePiece = mongoose.model("GamePiece", gamePieceSchema);
 
 var allTimeScoreboard = new Schema({
-    TopTenPlayerNames: [String],
-    TopTenPlayerScores: [Number],
+    TopTenPlayers: [{
+        name: String,
+        score: Number
+    }],
+    CurrentSize: Number
 });
 Scoreboard = mongoose.model("AllTimeScoreboard", allTimeScoreboard);
+
+app.post('/add/custom/', (req, res) => {
+    var data = req.body;
+    var speed = data["s"];
+    var diff = data["d"];
+    var user = data["u"];
+    var s;
+    var d;
+
+    console.log(diff);
+    console.log(speed);
+
+    if (speed == "slow") {
+        s = 800;
+    } else if (speed == "medium") {
+        s = 600;
+    } else if (speed == "fast") {
+        s = 400;
+    }
+
+    if (diff == "slow") {
+        d = 800;
+    } else if (diff == "medium") {
+        d = 600;
+    } else if (diff == "fast") {
+        d = 400;
+    }
+
+    let p1 = User.findOne({username: user}).exec();
+    p1.then((result) => {
+        result.pieces = [];
+        
+        var pac = new GamePiece({ type: "pacman", lives: 3,  speed: s, flashing: false, pelletseaten: 0});
+        pac.save();
+        result.pieces.push(pac._id);
+
+        var g1 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        g1.save();
+        result.pieces.push(g1._id);
+
+        var g2 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        g2.save();
+        result.pieces.push(g2._id);
+
+        var g3 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        g3.save();
+        result.pieces.push(g3._id);
+
+        var g4 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        g4.save();
+        result.pieces.push(g4._id);
+
+        result.save();
+        res.send("GOOD");
+
+
+    }).catch((err) => {
+        console.log(err);
+    });
+
+});
 
 // adds a user to the database
 app.post('/add/user/', (req,res) => {
@@ -86,78 +154,152 @@ app.get('/login/:user/:pass', (req, res) => {
     })
 });
 
+app.get('/add/friend/:FRIEND/:USER', (req, res) => {
+
+    var f = req.params.FRIEND;
+    var u = req.params.USER;
+
+    let p1 = User.findOne( {username: u}).exec();
+    let p2 = User.find( {username: f}).exec();
+
+    p1.then((result) => {
+        p2.then((result2) => {
+            if (result2.length != 1) {
+                res.end("DNE");
+            } else {
+                for (i in result.friends) {
+                    if (result.friends[i] == result2[0].username) {
+                        res.end("EXISTS");
+                        return;
+                    }
+                }
+                console.log(result2[0].username);
+                result.friends.push(result2[0].username);
+                result.save();
+                res.end("SUCCESS");
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }).catch((err) => {
+        console.log(err);
+    });
+});
+
+app.get("/get/friends/scores/:USER", (req, res) => {
+    let u = req.params.USER;
+    let p = User.findOne({ username: u }).exec();
+    p.then((results) => {
+      return results.friends;
+    }).then((val) => {
+        var promises = [];
+        for (i in val) {
+            let p1 = User.findOne({ username: val[i] }).exec();
+            let friendPromise = p1.then((res1) => {
+                let val;
+                if (!res1.highscore) {
+                    val = "No Score";
+                } else {
+                    val = res1.highscore;
+                }
+                return "<div style='border: #ff895d solid 2px; font-size: 2em; font-family:Courier'>" + 
+                    res1.username + ":\t" + val + "</div>";
+            }).catch((err) => {
+                console.log(err);
+            });
+            promises.push(friendPromise);
+        }
+        Promise.all(promises).then((texts) => {
+            res.send(texts.join(""));
+        }).catch((err) => {
+            console.log(err);
+        });
+    }).catch((err) => {
+        console.log(err);
+    });
+});
+  
+
+app.get("/get/scoreboard/", (req, res) => {
+
+    let p = Scoreboard.findOne({}).exec();
+
+    p.then((result) => {
+        let names = result.TopTenPlayerNames;
+        let scores = result.TopTenPlayerScores;
+        return [names, scores];
+    }).then((arr) => {
+        var html = "";
+        for (i in arr[0]) {
+            let x = Number(i) + 1;
+            html += "<div style='border: #ff895d solid 2px; font-size: 2.2em; font-family:Courier'><div>" + x + ".\t" + 
+                arr[0][i] + "</div><div>(Score:\t" + arr[1][i] + ")</div></div>";
+        }
+        return html;
+    }).then((retval) => {
+        res.send(retval);
+    }).catch((err) => {
+        console.log(err);
+    });
+
+});
+
+// incomplete
+app.post("/add/score/:USER/:SCORE", (req, res) => {
+
+    let u = req.params.USER;
+    let s = req.params.SCORE;
+    let p = User.findOne({username: u}).exec();
+    let p2 = Scoreboard.findOne({}).exec();
+
+    p.then((result) => {
+        if (result.highscore < s) {
+            result.highscore = s;
+            result.save();
+        }
+        p2.then((result2) => {
+            if (result2.CurrentSize < 10) {
+                result2.TopTenPlayerNames.push(u);
+                result2.TopTenPlayerScores.push(s);
+                result2.CurrentSize++;
+                result2.save();
+            } else {// make sure it stays sorted
+
+            }
+        });
+    }).catch((err) => {
+        console.log(err);
+    });
+});
+
+app.get('/begin/game/:USER', (req,res) => {
+    var u = req.params.USER;
+
+    p1 = User.findOne({username: u}).exec();
+    p1.then((result) => {
+        return result.pieces;
+    }).then((val) => {
+        var promises = [];
+        for (i in val) {
+            let p1 = GamePiece.findOne({ _id: val[i] }).exec();
+            let piecePromise = p1.then((res1) => {
+                return res1;
+            }).catch((err) => {
+                console.log(err);
+            });
+            promises.push(piecePromise);
+        }        
+        Promise.all(promises).then((texts) => {
+            res.send(texts);
+        }).catch((err) => {
+            console.log(err);
+        });
+        
+    }).catch((err) => {
+        console.log(err);
+    });
+
+
+});
+
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
-
-
-
-/*const express = require("express");
-const app = express();
-const port = 3000;
-const mongoose = require("mongoose");
-const mongoDB = "mongodb://127.0.0.1:27017/pacman";
-
-app.use(express.static("./public_html/html"));
-app.use(express.json());*/
-
-/*
- * Initialize connection with database and create necessary Schemas.
- * GamePiece object can be either Ghost or PacMan sprites, which
- * is defined by the type attribute. Both game pieces need speed,
- * PacMan needs lives and pellets eaten attribute, and Ghosts need
- * flashing attribute. There will be a single scoreboard object
- * that contains the names and scores of the top 10 PacMan scores
- * played all time. Every time a game is played, we'll update this
- * universal scoreboard if necessary
- */
-/*
-async function main() {
-  mongoose.createConnection(mongoDB);
-  await mongoose.connect(mongoDB);
-  var Schema = mongoose.Schema;
-  var userSchema = new Schema({
-    username: String,
-    password: String,
-    friends: [String],
-    highscore: Number,
-  });
-  User = mongoose.model("User", userSchema);
-
-  var gamePieceSchema = new Schema({
-    type: String,
-    lives: Number,
-    speed: Number,
-    flashing: Boolean,
-    pelletseaten: Number,
-  });
-  GamePiece = mongoose.model("GamePiece", gamePieceSchema);
-
-  var allTimeScoreboard = new Schema({
-    TopTenPlayerNames: [String],
-    TopTenPlayerScores: [Number],
-  });
-  Scoreboard = mongoose.model("AllTimeScoreboard", allTimeScoreboard);
-}*/
-
-/*
- * Waits for main to run, then creates express server on port 3000.
- */
-/*
-main()
-  .then(() => {
-    app.get("/", (req, res) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "text/plain");
-      res.end();
-    });
-    app.listen(port, (error) => {
-      if (error) {
-        console.log("Error listening on port", port);
-      } else {
-        console.log("Listening on port", port);
-      }
-    });
-  })
-  .catch((error) => {
-    console.log("Error connecting to database: " + error);
-  });
-*/
