@@ -28,11 +28,12 @@ User = mongoose.model("User", userSchema);
 
 var gamePieceSchema = new Schema({
     type: String, // pacman vs ghost
+    name: String,
     lives: Number, // pacman init to 3
     speed: Number, //slow 800 med 600 fast 400
     flashing: Boolean, //init at false
-    intermediate: Boolean,
-    freed: Boolean,
+    intermediate: Boolean, // diff
+    freed: Boolean, // init to false
     pelletseaten: Number, // pellets eaten init to 0
 });
 GamePiece = mongoose.model("GamePiece", gamePieceSchema);
@@ -52,7 +53,10 @@ app.post('/add/custom/', (req, res) => {
     var diff = data["d"];
     var user = data["u"];
     var s;
-    var d;
+    var gd1 = true;
+    var gd2 = false;
+    var gd3 = false;
+    var gd4 = false;
 
     console.log(diff);
     console.log(speed);
@@ -65,35 +69,35 @@ app.post('/add/custom/', (req, res) => {
         s = 400;
     }
 
-    if (diff == "slow") {
-        d = 800;
-    } else if (diff == "medium") {
-        d = 600;
-    } else if (diff == "fast") {
-        d = 400;
+    
+    if (diff == "medium") {
+        gd2 = true;
+    } else if (diff == "hard") {
+        gd2 = true;
+        gd3 = true;
     }
 
     let p1 = User.findOne({username: user}).exec();
     p1.then((result) => {
         result.pieces = [];
-        
-        var pac = new GamePiece({ type: "pacman", lives: 3,  speed: s, flashing: false, pelletseaten: 0});
+        // update all game pieces with new schema
+        var pac = new GamePiece({ type: "pacman", name: "Pacman", lives: 3,  speed: s, flashing: false, intermediate: false, freed: true, pelletseaten: 0});
         pac.save();
         result.pieces.push(pac._id);
 
-        var g1 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        var g1 = new GamePiece({ type: "ghost", name: "Blinky", lives: 0,  speed: s, flashing: false, intermediate: gd1, freed: false, pelletseaten: 0});
         g1.save();
         result.pieces.push(g1._id);
 
-        var g2 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        var g2 = new GamePiece({ type: "ghost", name: "Plinky", lives: 0,  speed: s, flashing: false, intermediate: gd2, freed: false, pelletseaten: 0 });
         g2.save();
         result.pieces.push(g2._id);
 
-        var g3 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        var g3 = new GamePiece({ type: "ghost", name: "Clyde", lives: 0,  speed: s, flashing: false, intermediate: gd3, freed: false, pelletseaten: 0 });
         g3.save();
         result.pieces.push(g3._id);
 
-        var g4 = new GamePiece({ type: "ghost", lives: 0,  speed: s, flashing: false, pelletseaten: 0});
+        var g4 = new GamePiece({ type: "ghost", name: "Inky", lives: 0,  speed: s, flashing: false, intermediate: gd4, freed: false, pelletseaten: 0});
         g4.save();
         result.pieces.push(g4._id);
 
@@ -294,6 +298,24 @@ app.get('/begin/game/:USER', (req,res) => {
         }).catch((err) => {
             console.log(err);
         });
+    }).catch((err) => {
+        console.log(err);
+    });
+});
+
+app.get('/gameover/:USER/:PELLETS/:GAMEWON', (req,res) => {
+    var u = req.params.USER;
+    var p = req.params.PELLETS;
+    var g = req.params.GAMEWON;
+
+    p1 = User.findOne({username: u}).exec();
+    p1.then((result) => {
+        if (result.highscore < (Number(p)*10)) {
+            result.highscore = (Number(p)*10);
+            result.save();
+        }
+        var url = "/add/score/" + u + "/" + (Number(p)*10).toString();
+        res.redirect(url);
         
     }).catch((err) => {
         console.log(err);
@@ -303,3 +325,4 @@ app.get('/begin/game/:USER', (req,res) => {
 });
 
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
+
