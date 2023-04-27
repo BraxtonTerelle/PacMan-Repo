@@ -28,7 +28,7 @@ User = mongoose.model("User", userSchema);
 
 var gamePieceSchema = new Schema({
     type: String, // pacman vs ghost
-    name: String,
+    name: String, // ex Inky Blinky
     lives: Number, // pacman init to 3
     speed: Number, //slow 800 med 600 fast 400
     flashing: Boolean, //init at false
@@ -46,6 +46,7 @@ var allTimeScoreboard = new Schema({
     CurrentSize: Number
 });
 Scoreboard = mongoose.model("AllTimeScoreboard", allTimeScoreboard);
+
 
 app.post('/add/custom/', (req, res) => {
     var data = req.body;
@@ -223,21 +224,20 @@ app.get("/get/friends/scores/:USER", (req, res) => {
     });
 });
   
-
+// works
 app.get("/get/scoreboard/", (req, res) => {
 
     let p = Scoreboard.findOne({}).exec();
 
     p.then((result) => {
-        let names = result.TopTenPlayerNames;
-        let scores = result.TopTenPlayerScores;
-        return [names, scores];
+        let players = result.TopTenPlayers;
+        return players;
     }).then((arr) => {
         var html = "";
-        for (i in arr[0]) {
+        for (i in arr) {
             let x = Number(i) + 1;
             html += "<div style='border: #ff895d solid 2px; font-size: 2.2em; font-family:Courier'><div>" + x + ".\t" + 
-                arr[0][i] + "</div><div>(Score:\t" + arr[1][i] + ")</div></div>";
+                arr[i].name + "</div><div>(Score:\t" + arr[i].score + ")</div></div>";
         }
         return html;
     }).then((retval) => {
@@ -248,33 +248,6 @@ app.get("/get/scoreboard/", (req, res) => {
 
 });
 
-// incomplete
-app.post("/add/score/:USER/:SCORE", (req, res) => {
-
-    let u = req.params.USER;
-    let s = req.params.SCORE;
-    let p = User.findOne({username: u}).exec();
-    let p2 = Scoreboard.findOne({}).exec();
-
-    p.then((result) => {
-        if (result.highscore < s) {
-            result.highscore = s;
-            result.save();
-        }
-        p2.then((result2) => {
-            if (result2.CurrentSize < 10) {
-                result2.TopTenPlayerNames.push(u);
-                result2.TopTenPlayerScores.push(s);
-                result2.CurrentSize++;
-                result2.save();
-            } else {// make sure it stays sorted
-
-            }
-        });
-    }).catch((err) => {
-        console.log(err);
-    });
-});
 
 app.get('/begin/game/:USER', (req,res) => {
     var u = req.params.USER;
@@ -303,25 +276,33 @@ app.get('/begin/game/:USER', (req,res) => {
     });
 });
 
-app.get('/gameover/:USER/:PELLETS/:GAMEWON', (req,res) => {
-    var u = req.params.USER;
-    var p = req.params.PELLETS;
-    var g = req.params.GAMEWON;
+app.get('/gameover/:USER/:PELLETS', (req,res) => {
+    let u = req.params.USER;
+    let s = Number(req.params.PELLETS) * 10;
+    let p = User.findOne({username: u}).exec();
+    let p2 = Scoreboard.findOne({}).exec();
 
-    p1 = User.findOne({username: u}).exec();
-    p1.then((result) => {
-        if (result.highscore < (Number(p)*10)) {
-            result.highscore = (Number(p)*10);
+    p.then((result) => {
+        if (result.highscore < s) {
+            result.highscore = s;
             result.save();
         }
-        var url = "/add/score/" + u + "/" + (Number(p)*10).toString();
-        res.redirect(url);
-        
+        p2.then((result2) => {
+            if (result2.CurrentSize < 10) {
+                result2.TopTenPlayers.push({name: u, score: s});
+                result2.CurrentSize++;
+            } else if (s > result2.TopTenPlayers[9].score) {
+                result2.TopTenPlayers[9] = {name: u, score: s};
+            }
+            let sortedPlayers = result2.TopTenPlayers.sort((val1, val2) => (val2.score - val1.score));
+            result2.TopTenPlayers = sortedPlayers;
+            result2.save();
+        }).catch((err) => {
+            console.log(err);
+        });
     }).catch((err) => {
         console.log(err);
     });
-
-
 });
 
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
