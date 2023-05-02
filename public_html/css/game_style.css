@@ -47,8 +47,6 @@ html {
 #container {
   display: flex;
   flex-wrap: wrap;
-  width: 725px;
-  height: 700px;
   border: 2px solid black;
   top: 25%;
   margin-left: auto;
@@ -58,66 +56,119 @@ html {
 }
 
 .availablePath {
-  width: 25px;
-  height: 25px;
-  background-color: grey;
+  width: 35px;
+  height: 35px;
+  background-color: black;
+  position: relative;
 }
 
-.gridWall {
-  width: 25px;
-  height: 25px;
-  background-color: aquamarine;
+.availablePath::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background-color: pink;
 }
 
-.gridCushion {
-  width: 25px;
-  height: 25px;
-  background-color: blue;
+.travelledPath {
+  width: 35px;
+  height: 35px;
+  background-color: black;
+}
+
+.wall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/horizontal_wall.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.squareWall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/square_wall.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.cornerWall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/corner_wall.png");
+  background-color: black;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.uWall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/u-wall.png");
+  background-color: black;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .ghostPrison {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   background: url("../images/Prison_Icon.png");
+  background-color: black;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .blinky {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   background: url("../images/Blinky_Icon.png");
-  background-color: grey;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .pinky {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   background: url("../images/Pinky_Icon.png");
-  background-color: grey;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .inky {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   background: url("../images/Inky_Icon.png");
-  background-color: grey;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .clyde {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   background: url("../images/Clyde_Icon.png");
-  background-color: grey;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .pacMan {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   background: url("../images/Pacman_Icon.png");
-  background-color: grey;
-}
-
-.pac-dot {
-  background-color: green;
-  border: 5px solid white;
-  box-sizing: border-box;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
