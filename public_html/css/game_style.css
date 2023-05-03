@@ -1,0 +1,179 @@
+/*
+    Braxton Little, Jake Gridley 
+    game_style.css: THis page is the css page that is used to style the game.html page
+*/
+
+#gameTitleDiv {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 25%;
+  text-align: center;
+  background-color: #005689;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.7em;
+}
+
+a {
+  color: #ff895d;
+}
+
+#gMenuButton {
+  position: fixed;
+  top: 1%;
+  left: 1%;
+  color: #ff895d;
+  border: 2px solid #ff895d;
+  padding: 4px;
+}
+
+#gameBody {
+  position: fixed;
+  top: 25%;
+  height: 75%;
+  left: 0%;
+  width: 100%;
+  text-align: center;
+  background-color: #d5eeff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+html {
+  font-family: "Courier New", Courier, monospace;
+}
+
+#container {
+  display: flex;
+  flex-wrap: wrap;
+  border: 2px solid black;
+  top: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  align-content: flex-start;
+}
+
+.availablePath {
+  width: 35px;
+  height: 35px;
+  background-color: black;
+  position: relative;
+}
+
+.availablePath::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background-color: pink;
+}
+
+.travelledPath {
+  width: 35px;
+  height: 35px;
+  background-color: black;
+}
+
+.wall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/horizontal_wall.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.squareWall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/square_wall.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.cornerWall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/corner_wall.png");
+  background-color: black;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.uWall {
+  width: 35px;
+  height: 35px;
+  background: url("../images/u-wall.png");
+  background-color: black;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.ghostPrison {
+  width: 35px;
+  height: 35px;
+  background: url("../images/Prison_Icon.png");
+  background-color: black;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.blinky {
+  width: 35px;
+  height: 35px;
+  background: url("../images/Blinky_Icon.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.pinky {
+  width: 35px;
+  height: 35px;
+  background: url("../images/Pinky_Icon.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.inky {
+  width: 35px;
+  height: 35px;
+  background: url("../images/Inky_Icon.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.clyde {
+  width: 35px;
+  height: 35px;
+  background: url("../images/Clyde_Icon.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.pacMan {
+  width: 35px;
+  height: 35px;
+  background: url("../images/Pacman_Icon.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
