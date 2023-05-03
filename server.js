@@ -46,6 +46,9 @@ var gamePieceSchema = new Schema({
   intermediate: Boolean, // diff
   freed: Boolean, // init to false
   pelletseaten: Number, // pellets eaten init to 0
+  index: Number,
+  direction: Number,
+  pelletsThisRound: Number,
 });
 GamePiece = mongoose.model("GamePiece", gamePieceSchema);
 
@@ -76,11 +79,11 @@ app.post("/add/custom/", (req, res) => {
 
 
   if (speed == "slow") {
-    s = 800;
+    s = 450;
   } else if (speed == "medium") {
-    s = 600;
+    s = 250;
   } else if (speed == "fast") {
-    s = 400;
+    s = 150;
   }
 
   if (diff == "medium") {
@@ -103,6 +106,8 @@ app.post("/add/custom/", (req, res) => {
       intermediate: false,
       freed: true,
       pelletseaten: 0,
+      index: 0,
+      direction: -1,
     });
     pac.save();
     result.pieces.push(pac._id);
@@ -116,19 +121,23 @@ app.post("/add/custom/", (req, res) => {
       intermediate: gd1,
       freed: false,
       pelletseaten: 0,
+      index: 0,
+      direction: -1,
     });
     g1.save();
     result.pieces.push(g1._id);
 
     var g2 = new GamePiece({
       type: "ghost",
-      name: "Plinky",
+      name: "Pinky",
       lives: 0,
       speed: s,
       flashing: false,
       intermediate: gd2,
       freed: false,
       pelletseaten: 0,
+      index: 0,
+      direction: -1,
     });
     g2.save();
     result.pieces.push(g2._id);
@@ -142,6 +151,8 @@ app.post("/add/custom/", (req, res) => {
       intermediate: gd3,
       freed: false,
       pelletseaten: 0,
+      index: 0,
+      direction: -1,
     });
     g3.save();
     result.pieces.push(g3._id);
@@ -155,6 +166,8 @@ app.post("/add/custom/", (req, res) => {
       intermediate: gd4,
       freed: false,
       pelletseaten: 0,
+      index: 0,
+      direction: -1,
     });
     g4.save();
     result.pieces.push(g4._id);

@@ -22,6 +22,11 @@ a {
   color: #ff895d;
 }
 
+h4{
+  font-size: 16px;
+  color: yellow;
+}
+
 #gMenuButton {
   position: fixed;
   top: 1%;
@@ -33,7 +38,7 @@ a {
 
 #gameBody {
   position: fixed;
-  top: 25%;
+  top: 22%;
   height: 75%;
   left: 0%;
   width: 100%;
@@ -49,15 +54,93 @@ html {
   font-family: "Courier New", Courier, monospace;
 }
 
-#container {
+#pacmanContainer {
   display: flex;
   flex-wrap: wrap;
   border: 2px solid black;
-  top: 25%;
+  align-content: flex-start;
+}
+
+#gameContainer {
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 15px;
-  align-content: flex-start;
+  top: 25%;
+}
+
+#popupContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width:100%;
+  height:550px;
+}
+
+#pacmanPopup {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: space-evenly;
+  width: 70%;
+  height:450px;
+  border: 1px solid black;
+}
+
+#startButton {
+  height:35px;
+  margin-top:auto;
+  margin-bottom:auto;
+}
+
+#scoreCounter{
+  justify-content: center;
+}
+
+h4{
+  position:absolute;
+  top:50%;
+  left: 45%;
+  z-index: 100;
+  font-size: 16px;
+  font-weight:bold;
+}
+
+.gameData{
+  display:flex;
+  flex-direction:row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left:auto;
+  margin-right:auto;
+  font-size: 16px;
+  font-family: "Courier New", Courier, monospace;
+
+  background-color:black;
+  border: 2px solid black;
+  color:white;
+  height:30px;
+}
+
+.setupButton {
+  width: 20%;
+  max-width: 200px;
+  min-width:100px;
+  height:55px;
+  font-family: "Courier New", Courier, monospace;
+  text-align:center;
+  border: 1px solid black;
+  border-radius: 2px;
+  font-size: 1.25em;
+}
+
+#choiceContainer {
+  width: 100%;
+}
+
+.buttonRow{
+  width: 100%;
+  display:flex;
+  flex-direction:row;
+  justify-content: space-evenly;
 }
 
 .availablePath {
@@ -66,6 +149,7 @@ html {
   background-color: black;
   position: relative;
 }
+
 
 .availablePath::after {
   content: "";
@@ -77,6 +161,7 @@ html {
   height: 7px;
   border-radius: 2px;
   background-color: pink;
+  z-index:2;
 }
 
 .travelledPath {
@@ -133,47 +218,54 @@ html {
   background-position: center center;
 }
 
-.blinky {
+.Blinky {
   width: 35px;
   height: 35px;
   background: url("../images/Blinky_Icon.png");
   background-color: black;
   background-repeat: no-repeat;
   background-position: center center;
+  z-index:3;
 }
 
-.pinky {
+.Pinky {
   width: 35px;
   height: 35px;
   background: url("../images/Pinky_Icon.png");
   background-color: black;
   background-repeat: no-repeat;
   background-position: center center;
+  z-index:3;
+  
 }
 
-.inky {
+.Inky {
   width: 35px;
   height: 35px;
   background: url("../images/Inky_Icon.png");
   background-color: black;
   background-repeat: no-repeat;
   background-position: center center;
+  z-index:3;
 }
 
-.clyde {
+.Clyde {
   width: 35px;
   height: 35px;
   background: url("../images/Clyde_Icon.png");
   background-color: black;
   background-repeat: no-repeat;
   background-position: center center;
+  z-index:3;
 }
 
-.pacMan {
+.Pacman {
   width: 35px;
   height: 35px;
   background: url("../images/Pacman_Icon.png");
   background-color: black;
   background-repeat: no-repeat;
   background-position: center center;
+
+  z-index:3;
 }

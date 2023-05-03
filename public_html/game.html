@@ -27,6 +27,27 @@
         <a href="./menu.html">MENU</a>
       </div>
     </div>
-    <div id="container"></div>
+    <div id="popupContainer">
+      <div id="pacmanPopup">
+        <h1>Choose settings to begin!</h1>
+        <div id="choiceContainer">
+          <h3>Pac-Man and Ghost speed</h3>
+          <div class="buttonRow">
+            <button id="slowSpeed" class="setupButton">Slow</button>
+            <button id="mediumSpeed" class="setupButton">Medium</button>
+            <button id="fastSpeed" class="setupButton">Fast</button>
+          </div>
+        </div>
+        <div id="choiceContainer">
+          <h3>Ghost AI Difficulty</h3>
+          <div class="buttonRow">
+            <button id="easyDifficulty" class="setupButton">Easy</button>
+            <button id="mediumDifficulty" class="setupButton">Medium</button>
+            <button id="hardDifficulty" class="setupButton">Hard</button>
+          </div>
+        </div>
+      </div>
+      <button class="setupButton" id="startButton">Start Game</button>
+    </div>
   </body>
 </html>
