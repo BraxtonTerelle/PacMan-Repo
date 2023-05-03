@@ -1,3 +1,11 @@
+/*
+    Braxton Little, Jake Gridley
+    server.js: This file contains all imports, mongoose schema, and endpoints
+                used to respond to the client that are needed to run the multipage 
+                website and pacman game.
+*/
+
+// imports
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
@@ -11,11 +19,14 @@ app.use(express.json());
 app.use(bodyparser.json());
 app.use(cookieParser());
 
+// connect to mongodb
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.connection.on("err", () => {
   console.log("there was a problem connecting to mongodb");
 });
 var Schema = mongoose.Schema;
+
+// user schema
 var userSchema = new Schema({
   username: String,
   password: String,
@@ -25,6 +36,7 @@ var userSchema = new Schema({
 });
 User = mongoose.model("User", userSchema);
 
+// game piece schema
 var gamePieceSchema = new Schema({
   type: String, // pacman vs ghost
   name: String, // ex Inky Blinky
@@ -37,6 +49,7 @@ var gamePieceSchema = new Schema({
 });
 GamePiece = mongoose.model("GamePiece", gamePieceSchema);
 
+// all time scoreboard
 var allTimeScoreboard = new Schema({
   TopTenPlayers: [
     {
@@ -48,6 +61,8 @@ var allTimeScoreboard = new Schema({
 });
 Scoreboard = mongoose.model("AllTimeScoreboard", allTimeScoreboard);
 
+
+// endpoint for customization of the game, sets a speed and difficulty for the game
 app.post("/add/custom/", (req, res) => {
   var data = req.body;
   var speed = data["s"];
@@ -59,8 +74,6 @@ app.post("/add/custom/", (req, res) => {
   var gd3 = false;
   var gd4 = false;
 
-  console.log(diff);
-  console.log(speed);
 
   if (speed == "slow") {
     s = 800;
@@ -181,6 +194,7 @@ app.post("/add/user/", (req, res) => {
   });
 });
 
+// allows user to log in if they have an account
 app.get("/login/:user/:pass", (req, res) => {
   var u = req.params.user;
   var p = req.params.pass;
@@ -199,6 +213,7 @@ app.get("/login/:user/:pass", (req, res) => {
   });
 });
 
+// allows user to add a friend
 app.get("/add/friend/:FRIEND/:USER", (req, res) => {
   var f = req.params.FRIEND;
   var u = req.params.USER;
@@ -230,6 +245,7 @@ app.get("/add/friend/:FRIEND/:USER", (req, res) => {
   });
 });
 
+// retrieves all of a users friends' scores
 app.get("/get/friends/scores/:USER", (req, res) => {
   let u = req.params.USER;
   let p = User.findOne({ username: u }).exec();
@@ -274,7 +290,7 @@ app.get("/get/friends/scores/:USER", (req, res) => {
     });
 });
 
-// works
+// retrieves the top ten players scoreboard
 app.get("/get/scoreboard/", (req, res) => {
   let p = Scoreboard.findOne({}).exec();
 
@@ -305,6 +321,7 @@ app.get("/get/scoreboard/", (req, res) => {
     });
 });
 
+// starts the game by sending the game piece data for a user to the client
 app.get("/begin/game/:USER", (req, res) => {
   var u = req.params.USER;
 
@@ -338,6 +355,8 @@ app.get("/begin/game/:USER", (req, res) => {
     });
 });
 
+
+// ends a game and updates a users scores
 app.get("/gameover/:USER/:PELLETS", (req, res) => {
   let u = req.params.USER;
   let s = Number(req.params.PELLETS) * 10;
@@ -372,3 +391,5 @@ app.get("/gameover/:USER/:PELLETS", (req, res) => {
 app.listen(port, () =>
   console.log(`App listening at http://localhost:${port}`)
 );
+
+
