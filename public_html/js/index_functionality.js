@@ -1,3 +1,12 @@
+/*
+    Jake Gridley
+    index_functionality.js: Adds functional to index.html page.
+*/
+
+
+/*
+    This function creates a new user if it is not already in the database
+*/
 function createUser() {
     var url = "http://localhost:3000/add/user/"
     var usernameText = document.getElementById("newUser").value;
@@ -21,6 +30,9 @@ function createUser() {
     }
 }
 
+/*
+    This function logs in the user
+*/
 function userLogin() {
     var url = "http://localhost:3000/login/";
     var usernameText = document.getElementById("oldUser").value;
