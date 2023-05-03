@@ -1,3 +1,11 @@
+<!---
+    Jake Gridley
+    game.html: THis page contains content that is displayed on the game.html page.
+                    This page holds the Pac-Man game and is the page where the game
+                    is played.
+
+-->
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -5,7 +13,13 @@
     <link rel="stylesheet" type="text/css" href="./css/game_style.css" />
     <script src="./js/game_functionality.js"></script>
     <title>Pac-Man</title>
-  </head>
+  </head> 
+  <script>
+    var user = document.cookie.split("=")[1];
+    if (!user) {
+        window.location.href = "./index.html";
+    }
+  </script>
   <body id="gameBody">
     <div id="gameTitleDiv">
       <h1>Pac-Man</h1>

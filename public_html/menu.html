@@ -1,3 +1,10 @@
+<!---
+    Jake Gridley
+    menu.html: THis page contains content that is displayed on the menu.html page.
+                    This page holds buttons that are used to navigate to other pages
+                    on this website.
+-->
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -6,6 +13,12 @@
     <script src="./js/menu_functionality.js"></script>
     <title>Pac-Man</title>
 </head>
+<script>
+    var user = document.cookie.split("=")[1];
+    if (!user) {
+        window.location.href = "./index.html";
+    }
+</script>
 <body id="menuBody">
     <div id="menuTitleDiv">
         <h1>Pac-Man</h1>

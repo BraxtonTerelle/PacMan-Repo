@@ -1,0 +1,56 @@
+<!---
+    Jake Gridley
+    settings.html: THis page contains content that is displayed on the settings.html page.
+                    This page holds options for difficulty and speed of the game and then
+                    redirects the user to the game page.
+
+-->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./css/settings_style.css">
+    <script src="./js/settings_functionality.js"></script>
+    <title>Pac-Man</title>
+</head>
+<script>
+    var user = document.cookie.split("=")[1];
+    if (!user) {
+        window.location.href = "./index.html";
+    }
+</script>
+<body id="settingsBody">
+    <div id="settingsTitleDiv">
+        <h1>Pac-Man Settings</h1>
+        <div id="setMenuButton">
+            <a href="./menu.html">MENU</a>
+        </div>
+    </div>
+
+    <div id="speedDiv">
+        <h3>Speed</h3>
+        <select name="speed" id="speedSelection">
+            <option value="slow">Slow</option>
+            <option value="medium">Medium</option>
+            <option value="fast">Fast</option>
+        </select>
+    </div>
+
+    <div id="diffDiv">
+        <h3>Difficulty</h3>
+        <select name="difficulty" id="diffSelection">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select> 
+    </div>
+
+        
+
+    <div id="startButton"><input type="button" value="Start Game" onclick="startGame();"></div>
+        
+    
+
+</body>
+</html>

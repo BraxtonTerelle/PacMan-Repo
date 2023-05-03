@@ -1,3 +1,12 @@
+<!---
+    Jake Gridley
+    friends.html: THis page contains content that is displayed on the friends.html page.
+                    This page is used to for a user to add friends and view their friends
+                    scores.
+
+-->
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -6,6 +15,12 @@
     <script src="./js/friends_functionality.js"></script>
     <title>Pac-Man</title>
 </head>
+<script>
+    var user = document.cookie.split("=")[1];
+    if (!user) {
+        window.location.href = "./index.html";
+    }
+</script>
 <body id="friendsBody">
     <div id="friendsTitleDiv">
         <h1>Pac-Man Friends</h1>
@@ -31,7 +46,9 @@
         <div id="msg"></div>
 
     </div>
-
+<script>
+    setInterval(getFriendsScores, 1000);
+</script>
 
 </body>
 </html>
