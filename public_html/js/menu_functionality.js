@@ -6,7 +6,7 @@
 
 // redirect to the settings.html and then to game.html
 function gameRedirect() {
-    window.location.href = "./settings.html";
+    window.location.href = "./game.html";
 }
 
 // redirects to the scoreboard

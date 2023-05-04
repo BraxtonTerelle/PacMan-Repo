@@ -23,12 +23,13 @@ var gridElements = [];
  * 11 = left-facing u
  * 12 = up-facing u
  * 13 = square wall
+ * 14 = power pellet
  */
 var gridLayout = [
   3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
   7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
   7, 0, 9, 1, 11, 0, 9, 11, 0, 9, 1, 1, 11, 0, 1, 1, 0, 9, 1, 11, 0, 7,
-  7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
+  7, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 7,
   7, 0, 3, 4, 0, 3, 1, 1, 4, 0, 3, 4, 0, 3, 1, 1, 4, 0, 3, 4, 0, 7,
   7, 0, 5, 6, 0, 5, 1, 1, 6, 0, 5, 6, 0, 5, 1, 1, 6, 0, 5, 6, 0, 7,
   7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
@@ -37,7 +38,7 @@ var gridLayout = [
   8, 0, 0, 0, 0, 0, 0, 0, 7, 8, 8, 8, 7, 0, 0, 0, 0, 0, 0, 0, 0, 8,
   1, 1, 1, 1, 4, 0, 10, 0, 7, 8, 8, 8, 7, 0, 3, 4, 0, 3, 1, 1, 1, 1,
   3, 1, 1, 1, 6, 0, 12, 0, 5, 1, 1, 1, 6, 0, 5, 6, 0, 5, 1, 1, 1, 4,
-  7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
+  7, 14, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 7,
   7, 0, 13, 0, 9, 1, 11, 0, 13, 0, 9, 11, 0, 13, 0, 9, 1, 11, 0, 13, 0, 7,
   7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7,
   5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6,
@@ -117,9 +118,10 @@ async function main() {
 
 function switchViews() {
   var initialContainer = document.getElementById("popupContainer");
-  if(initialContainer!=null){
+  if (initialContainer != null) {
     document.body.removeChild(document.getElementById("popupContainer"));
   }
+
   var scoreCounter = document.createElement("div");
   scoreCounter.className = "gameData";
   scoreCounter.id = "scoreCounter";
@@ -180,8 +182,46 @@ function interpretPopupResults() {
   }
 }
 
+function createEndGameWindow(didWin, pellets) {
+  var endGamePopup = document.createElement("div");
+  endGamePopup.id = "endGamePopup";
+  var endGameHeader = document.createElement("div");
+  endGameHeader.id = "endGameHeader";
+  var button1Container = document.createElement("div");
+  var button2Container = document.createElement("div");
+  var playAgainButton = document.createElement("button");
+  playAgainButton.id = "playAgainButton";
+  playAgainButton.addEventListener("click", () => {
+    var endPopup = document.getElementById("endGamePopup");
+    if (endPopup != null) {
+      document.body.removeChild(endPopup);
+    }
+    interpretPopupResults();
+  });
+  playAgainButton.innerText = "Play Again";
+  playAgainButton.className = "gameOverButton";
+  var newGameButton = document.createElement("button");
+  newGameButton.className = "gameOverButton";
+  newGameButton.addEventListener("click", () => {
+    window.location.href = "./game.html";
+  });
+  newGameButton.innerText = "New Game";
+  if (didWin) {
+    endGameHeader.innerText =
+      "Congrats, you beat the game! Score: " + pellets * 10;
+  } else {
+    endGameHeader.innerText = "Good try! Score: " + pellets * 10;
+  }
+  button1Container.appendChild(playAgainButton);
+  button2Container.appendChild(newGameButton);
+  endGamePopup.appendChild(endGameHeader);
+  endGamePopup.appendChild(button1Container);
+  endGamePopup.appendChild(newGameButton);
+  document.body.appendChild(endGamePopup);
+}
+
 function gameOver(didWin, pellets) {
-  var url = `http://localhost:3000/gameover/${username}/${pacmanPiece.pelletseaten}`;
+  var url = `http://localhost:3000/gameover/${username}/${pellets}`;
   fetch(url)
     .then(() => {
       console.log("Successfully notified the server that the game's over");
@@ -189,30 +229,12 @@ function gameOver(didWin, pellets) {
     .catch((error) => {
       console.log("Failed to notify server game's over: " + error);
     });
+  setTimeout(() => {
     document.body.removeChild(document.getElementById("pacmanContainer"));
     document.body.removeChild(document.getElementById("livesCounter"));
     document.body.removeChild(document.getElementById("scoreCounter"));
-    var endGamePopup = document.createElement("div");
-    endGamePopup.id = "endGamePopup"
-    var endGameHeader = document.createElement("h2");
-    var playAgainButton = document.createElement("button");
-    playAgainButton.addEventListener("click", ()=>{
-      var endPopup = document.getElementById("endGamePopup");
-      if(endPopup!=null){
-        document.body.removeChild(endPopup);
-      }
-      interpretPopupResults();
-    });
-    playAgainButton.innerHTML = `<button class="setupButton">Play Again</button>`;
-  if (didWin) {
-    endGameHeader.innerText = "Congrats, you beat the game! Score: " + (pellets * 10);
-
-  } else {
-    endGameHeader.innerText = "Good try! Score: " + (pellets * 10);
-  }
-  endGamePopup.appendChild(endGameHeader);
-  endGamePopup.appendChild(playAgainButton);
-  document.body.appendChild(endGamePopup);
+    createEndGameWindow(didWin, pellets);
+  }, 1500);
 }
 
 function showCountdownPopup() {
@@ -239,24 +261,28 @@ function startRound() {
   blinkyPiece.index = 0;
   blinkyPiece.freed = false;
   blinkyPiece.flashing = false;
+  blinkyPiece.transitioning = false;
   blinkyPiece.pelletsThisRound = 0;
   blinkyPiece.direction = -1;
 
   pinkyPiece.index = 185;
   pinkyPiece.freed = false;
   pinkyPiece.flashing = false;
+  pinkyPiece.transitioning = false;
   pinkyPiece.pelletsThisRound = 0;
   pinkyPiece.direction = -1;
 
   inkyPiece.index = 187;
   inkyPiece.freed = false;
   inkyPiece.flashing = false;
+  inkyPiece.transitioning = false;
   inkyPiece.pelletsThisRound = 0;
   inkyPiece.direction = -1;
 
   clydePiece.index = 229;
   clydePiece.freed = false;
   clydePiece.flashing = false;
+  clydePiece.transitioning = false;
   clydePiece.pelletsThisRound = 0;
   clydePiece.direction = -1;
   width = 22;
@@ -295,7 +321,6 @@ function getGamePieces() {
               }
             }
           }
-
           resolve(text);
         });
       })
@@ -317,7 +342,29 @@ function getGamePieces() {
  */
 
 function idlyMoveGhost(offset, spriteToMove, axis) {
-  gridElements[spriteToMove.index].classList.add(spriteToMove.name);
+  var flashing, transitioning, index;
+  if (spriteToMove.name == "Inky") {
+    flashing = inkyPiece.flashing;
+    transitioning = inkyPiece.transitioning;
+    index = inkyPiece.index;
+  } else if (spriteToMove.name == "Pinky") {
+    flashing = pinkyPiece.flashing;
+    transitioning = pinkyPiece.transitioning;
+    index = pinkyPiece.index;
+  } else if (spriteToMove.name == "Blinky") {
+    flashing = blinkyPiece.flashing;
+    transitioning = blinkyPiece.transitioning;
+    index = blinkyPiece.index;
+  } else if (spriteToMove.name == "Clyde") {
+    flashing = clydePiece.flashing;
+    transitioning = clydePiece.transitioning;
+    index = clydePiece.index;
+  }
+  if (flashing == true) {
+    gridElements[index].classList.add("vulnerableGhost");
+  } else {
+    gridElements[index].classList.add(spriteToMove.name);
+  }
   var spacesMoved = 0;
   if (axis == "horizontal") {
     // Right
@@ -337,43 +384,73 @@ function idlyMoveGhost(offset, spriteToMove, axis) {
    */
   var initialLives = pacmanPiece.lives;
   let idleInterval = setInterval(() => {
+    if (spriteToMove.name == "Inky") {
+      flashing = inkyPiece.flashing;
+      transitioning = inkyPiece.transitioning;
+      index = inkyPiece.index;
+    } else if (spriteToMove.name == "Pinky") {
+      flashing = pinkyPiece.flashing;
+      transitioning = pinkyPiece.transitioning;
+      index = pinkyPiece.index;
+    } else if (spriteToMove.name == "Blinky") {
+      flashing = blinkyPiece.flashing;
+      transitioning = blinkyPiece.transitioning;
+      index = blinkyPiece.index;
+    } else if (spriteToMove.name == "Clyde") {
+      flashing = clydePiece.flashing;
+      transitioning = clydePiece.transitioning;
+      index = clydePiece.index;
+    }
+    if (flashing == true) {
+      gridElements[index].classList.add("vulnerableGhost");
+    }
     if (
-      spriteToMove.freed == true ||
+      transitioning == true ||
       initialLives != pacmanPiece.lives ||
-      pacmanPiece.pelletsThisRound == 158
+      pacmanPiece.pelletsThisRound == 156
     ) {
       clearInterval(idleInterval);
       return;
     }
-    gridElements[spriteToMove.index].classList.remove(spriteToMove.name);
+    gridElements[index].classList.remove(spriteToMove.name);
+    gridElements[index].classList.remove("vulnerableGhost");
+
     if (spriteToMove.direction == 2) {
       if (spacesMoved == 0) {
         spacesMoved = -1;
         spriteToMove.direction = 0;
       }
       spriteToMove.index += offset;
+      index += offset;
     } else if (spriteToMove.direction == 0) {
       if (spacesMoved == 0) {
         spacesMoved = -1;
         spriteToMove.direction = 2;
       }
       spriteToMove.index -= offset;
+      index -= offset;
     } else if (spriteToMove.direction == 1) {
       if (spacesMoved == 1) {
         spacesMoved = -1;
         spriteToMove.direction = 3;
       }
       spriteToMove.index += offset;
+      index += offset;
     } else if (spriteToMove.direction == 3) {
       if (spacesMoved == 1) {
         spacesMoved = -1;
         spriteToMove.direction = 1;
       }
       spriteToMove.index -= offset;
+      index -= offset;
     }
-    gridElements[spriteToMove.index].classList.add(spriteToMove.name);
+    if (flashing == true) {
+      gridElements[index].classList.add("vulnerableGhost");
+    } else {
+      gridElements[index].classList.add(spriteToMove.name);
+    }
     spacesMoved++;
-  }, spriteToMove.speed);
+  }, (spriteToMove.speed * 2));
 }
 
 /*
@@ -388,7 +465,26 @@ function spawnSprites() {
     idlyMoveGhost(width, pinkyPiece, "vertical");
     idlyMoveGhost(width, inkyPiece, "vertical");
     idlyMoveGhost(1, clydePiece, "horizontal");
+    var initialLives = pacmanPiece.lives;
     releaseGhost(blinkyPiece);
+    setTimeout(() => {
+      if (initialLives != pacmanPiece.lives) {
+        return;
+      }
+      releaseGhost(inkyPiece);
+    }, 4000);
+    setTimeout(() => {
+      if (initialLives != pacmanPiece.lives) {
+        return;
+      }
+      releaseGhost(pinkyPiece);
+    }, 6000);
+    setTimeout(() => {
+      if (initialLives != pacmanPiece.lives) {
+        return;
+      }
+      releaseGhost(clydePiece);
+    }, 8000);
   }, 3000);
 }
 
@@ -445,21 +541,41 @@ function buildWalls() {
       gridElement.style.transform = "rotate(270deg)";
     } else if (gridLayout[i] == 13) {
       gridElement.classList.add("squareWall");
+    } else if (gridLayout[i] == 14) {
+      gridElement.classList.add("powerPellet");
     }
     mainContainer.appendChild(gridElement);
     gridElements.push(gridElement);
   }
+  var initialLives = pacmanPiece.lives;
+  var shownPellets = [];
+  var hiddenPellets = [];
+  let blinkInterval = setInterval(() => {
+    if (pacmanPiece.lives != initialLives) {
+      clearInterval(blinkInterval);
+      return;
+    }
+    shownPellets = [...document.getElementsByClassName("powerPellet")];
+    hiddenPellets = [...document.getElementsByClassName("hiddenPellet")];
+
+    for (let i = 0; i < shownPellets.length; i++) {
+      shownPellets[i].className = "hiddenPellet";
+    }
+    for (let i = 0; i < hiddenPellets.length; i++) {
+      hiddenPellets[i].className = "powerPellet";
+    }
+  }, 250);
 }
 
-function canMove(ghost) {
-  if (ghost.direction == 0) {
-    return checkUp(ghost.index);
-  } else if (ghost.direction == 1) {
-    return checkRight(ghost.index);
-  } else if (ghost.direction == 2) {
-    return checkDown(ghost.index);
-  } else if (ghost.direction == 3) {
-    return checkLeft(ghost.index);
+function canMove(direction, index) {
+  if (direction == 0) {
+    return checkUp(index);
+  } else if (direction == 1) {
+    return checkRight(index);
+  } else if (direction == 2) {
+    return checkDown(index);
+  } else if (direction == 3) {
+    return checkLeft(index);
   }
   return false;
 }
@@ -473,7 +589,9 @@ function checkLeft(index) {
   if (
     (index % width !== 0 &&
       gridElements[index - 1].classList.contains("availablePath")) ||
-    gridElements[index - 1].classList.contains("travelledPath")
+    gridElements[index - 1].classList.contains("travelledPath") ||
+    gridElements[index - 1].classList.contains("powerPellet") ||
+    gridElements[index - 1].classList.contains("hiddenPellet")
   ) {
     return true;
   }
@@ -489,7 +607,9 @@ function checkRight(index) {
   if (
     (index % width !== 0 &&
       gridElements[index + 1].classList.contains("availablePath")) ||
-    gridElements[index + 1].classList.contains("travelledPath")
+    gridElements[index + 1].classList.contains("travelledPath") ||
+    gridElements[index + 1].classList.contains("powerPellet") ||
+    gridElements[index + 1].classList.contains("hiddenPellet")
   ) {
     return true;
   }
@@ -505,7 +625,9 @@ function checkUp(index) {
   if (
     (index - width >= 0 &&
       gridElements[index - width].classList.contains("availablePath")) ||
-    gridElements[index - width].classList.contains("travelledPath")
+    gridElements[index - width].classList.contains("travelledPath") ||
+    gridElements[index - width].classList.contains("powerPellet") ||
+    gridElements[index - width].classList.contains("hiddenPellet")
   ) {
     return true;
   }
@@ -521,7 +643,9 @@ function checkDown(index) {
   if (
     (index + width < width * width &&
       gridElements[index + width].classList.contains("availablePath")) ||
-    gridElements[index + width].classList.contains("travelledPath")
+    gridElements[index + width].classList.contains("travelledPath") ||
+    gridElements[index + width].classList.contains("powerPellet") ||
+    gridElements[index + width].classList.contains("hiddenPellet")
   ) {
     return true;
   }
@@ -529,6 +653,10 @@ function checkDown(index) {
 }
 
 function lifeLostHelper() {
+  if(pacmanPiece.lives==0){
+    gameOver(false, pacmanPiece.pelletseaten);
+    return;
+  }
   document.removeEventListener("keydown", makeMove);
   setTimeout(() => {
     var scoreCounter = document.getElementById("scoreCounter");
@@ -545,42 +673,131 @@ function lifeLostHelper() {
   }, 1500);
 }
 
+function resetGhost(piece) {
+  pacmanPiece.pelletseaten += 15;
+  var initialLives = pacmanPiece.lives;
+  if (piece.name == "Blinky") {
+    blinkyPiece.freed = false;
+    blinkyPiece.flashing = false;
+    blinkyPiece.index = 186;
+    idlyMoveGhost(width, blinkyPiece, "vertical");
+    setTimeout(() => {
+      let upNext = setInterval(() => {
+        if (initialLives != pacmanPiece.lives) {
+          clearInterval(upNext);
+          return;
+        }
+        if (
+          !pinkyPiece.transitioning &&
+          !inkyPiece.transitioning &&
+          !clydePiece.transitioning
+        ) {
+          releaseGhost(blinkyPiece);
+          clearInterval(upNext);
+        }
+      }, 300);
+    }, 2000);
+  } else if (piece.name == "Inky") {
+    inkyPiece.freed = false;
+    inkyPiece.flashing = false;
+    inkyPiece.index = 187;
+    idlyMoveGhost(width, inkyPiece, "vertical");
+    setTimeout(() => {
+      let upNext = setInterval(() => {
+        if (initialLives != pacmanPiece.lives) {
+          clearInterval(upNext);
+          return;
+        }
+        if (
+          !pinkyPiece.transitioning &&
+          !blinkyPiece.transitioning &&
+          !clydePiece.transitioning
+        ) {
+          releaseGhost(inkyPiece);
+          clearInterval(upNext);
+        }
+      }, 300);
+    }), 2000;
+  } else if (piece.name == "Pinky") {
+    pinkyPiece.freed = false;
+    pinkyPiece.flashing = false;
+    pinkyPiece.index = 185;
+    idlyMoveGhost(width, pinkyPiece, "vertical");
+    setTimeout(() => {
+      let upNext = setInterval(() => {
+        if (initialLives != pacmanPiece.lives) {
+          clearInterval(upNext);
+          return;
+        }
+        if (
+          !inkyPiece.transitioning &&
+          !blinkyPiece.transitioning &&
+          !clydePiece.transitioning
+        ) {
+          releaseGhost(pinkyPiece);
+          clearInterval(upNext);
+        }
+      }, 300);
+    }), 2000;
+  } else if (piece.name == "Clyde") {
+    clydePiece.freed = false;
+    clydePiece.flashing = false;
+    clydePiece.index = 229;
+    idlyMoveGhost(1, clydePiece, "horizontal");
+    setTimeout(() => {
+      let upNext = setInterval(() => {
+        if (initialLives != pacmanPiece.lives) {
+          clearInterval(upNext);
+          return;
+        }
+        if (
+          !pinkyPiece.transitioning &&
+          !blinkyPiece.transitioning &&
+          !inkyPiece.transitioning
+        ) {
+          releaseGhost(clydePiece);
+          clearInterval(upNext);
+        }
+      }, 300);
+    }), 2000;
+  }
+}
+
 function isTouchingGhost() {
   if (blinkyPiece.flashing == true) {
     if (pacmanPiece.index == blinkyPiece.index) {
-      // Send piece to start and idle move, releasing after 2 seconds
+      resetGhost(blinkyPiece);
     } else if (pacmanPiece.index == inkyPiece.index) {
+      resetGhost(inkyPiece);
     } else if (pacmanPiece.index == pinkyPiece.index) {
+      resetGhost(pinkyPiece);
     } else if (pacmanPiece.index == clydePiece.index) {
+      resetGhost(clydePiece);
     }
   } else {
     if (pacmanPiece.index == blinkyPiece.index) {
       pacmanPiece.lives -= 1;
       pacmanPiece.direction = -1;
-      if (pacmanPiece.lives != 0) {
-        lifeLostHelper();
-      }
+      pacmanPiece.index = -1;
+      lifeLostHelper();
       return true;
     } else if (pacmanPiece.index == inkyPiece.index) {
       pacmanPiece.lives -= 1;
       pacmanPiece.direction = -1;
-      if (pacmanPiece.lives != 0) {
-        lifeLostHelper();
-      }
+      pacmanPiece.index = -1;
+      lifeLostHelper();
       return true;
     } else if (pacmanPiece.index == pinkyPiece.index) {
       pacmanPiece.lives -= 1;
       pacmanPiece.direction = -1;
-      if (pacmanPiece.lives != 0) {
-        lifeLostHelper();
-      }
+      pacmanPiece.index = -1;
+      lifeLostHelper();
       return true;
     } else if (pacmanPiece.index == clydePiece.index) {
       pacmanPiece.lives -= 1;
       pacmanPiece.direction = -1;
-      if (pacmanPiece.lives != 0) {
-        lifeLostHelper();
-      }
+      pacmanPiece.index = -1;
+      lifeLostHelper();
       return true;
     }
   }
@@ -593,9 +810,11 @@ function isTouchingGhost() {
  * ghosts leave their cage.
  */
 function checkGameStatus() {
-  var pelletseaten = pacmanPiece.pelletseaten;
-  if (isTouchingGhost()) {
-    pacmanPiece.index = 274;
+  if (pacmanPiece.pelletsThisRound == 156) {
+    gameOver(true, pacmanPiece.pelletseaten);
+    document.removeEventListener("keydown", makeMove);
+    return;
+  } else if (isTouchingGhost()) {
     if (pacmanPiece.lives == 2) {
       var life3 = document.getElementById("life3");
       if (life3 != null) {
@@ -611,84 +830,123 @@ function checkGameStatus() {
       if (life1 != null) {
         document.getElementById("livesCounter").removeChild(life1);
       }
-      gameOver(false, pelletseaten);
       document.removeEventListener("keydown", makeMove);
       return;
-    }
-  } else if (pacmanPiece.pelletsThisRound == 158) {
-    gameOver(true, pelletseaten);
-    document.removeEventListener("keydown", makeMove);
-    return;
-  } else {
-    let pelletThreshold = 10;
-    if (selectedDifficulty == "easy") {
-      pelletThreshold += 20;
-    } else if (selectedDifficulty == "medium") {
-      pelletThreshold += 10;
-    }
-    // Total # of pellets is 158
-    if (pacmanPiece.pelletsThisRound == pelletThreshold) {
-      if (pinkyPiece.freed != true) {
-        releaseGhost(pinkyPiece);
-      }
-    } else if (
-      pacmanPiece.pelletsThisRound ==
-      pelletThreshold + pelletThreshold
-    ) {
-      if (inkyPiece.freed != true) {
-        releaseGhost(inkyPiece);
-      }
-    } else if (
-      pacmanPiece.pelletsThisRound ==
-      pelletThreshold + pelletThreshold + pelletThreshold
-    ) {
-      if (clydePiece.freed != true) {
-        releaseGhost(clydePiece);
-      }
     }
   }
 }
 
-function makeIntermediateMove() {}
+function getXPos(element) {
+  const rect = element.getBoundingClientRect();
+  return rect.left;
+}
+
+function getYPos(element) {
+  const rect = element.getBoundingClientRect();
+  return rect.top;
+}
+
+function getIntermediateMoves(direction, index) {
+   var directionList = [];
+   var xPos = getXPos(gridElements[index]);
+   var yPos = getYPos(gridElements[index]);
+   var pacmanXPos = getXPos(gridElements[pacmanPiece.index]);
+   var pacmanYPos = getYPos(gridElements[pacmanPiece.index]);
+    if(direction==0 && pacmanYPos < yPos){
+      for(let i = 0; i<2; i++){
+        directionList.push(direction);
+      }
+    }
+    else if(direction==1 && pacmanXPos > xPos){
+      for(let i = 0; i<2; i++){
+        directionList.push(direction);
+      }
+    }
+    else if(direction==2 && pacmanYPos > yPos){
+      for(let i = 0; i<2; i++){
+        directionList.push(direction);
+      }
+    }
+    if(direction==3 && pacmanXPos < xPos){
+      for(let i = 0; i<2; i++){
+        directionList.push(direction);
+      }
+    }
+   return directionList;
+}
 
 /*
  * Checks if a different direction (other than opposite)
  * is available, and if so does random generator with heavy
  * bias to continuing forward and small chance to turn.
  */
-function makeRandomMove(ghost) {
-  if (ghost.name == "Blinky") {
-  }
+function makeGhostMove(ghost) {
   var initialLives = pacmanPiece.lives;
+  var freed, direction, index, difficulty;
   let randomInterval = setInterval(() => {
+    if (ghost.name == "Inky") {
+      freed = inkyPiece.freed;
+      direction = inkyPiece.direction;
+      index = inkyPiece.index;
+      difficulty = inkyPiece.intermediate;
+    } else if (ghost.name == "Pinky") {
+      freed = pinkyPiece.freed;
+      direction = pinkyPiece.direction;
+      index = pinkyPiece.index;
+      difficulty = pinkyPiece.intermediate;
+    } else if (ghost.name == "Blinky") {
+      freed = blinkyPiece.freed;
+      direction = blinkyPiece.direction;
+      difficulty = blinkyPiece.intermediate;
+      index = blinkyPiece.index;
+    } else if (ghost.name == "Clyde") {
+      freed = clydePiece.freed;
+      direction = clydePiece.direction;
+      index = clydePiece.index;
+      difficulty = clydePiece.intermediate;
+    }
+
     if (
-      pacmanPiece.pelletsThisRound == 158 ||
+      pacmanPiece.pelletsThisRound == 156 ||
       pacmanPiece.lives != initialLives
     ) {
       clearInterval(randomInterval);
       return;
     }
+    if (!freed) {
+      clearInterval(randomInterval);
+      return;
+    }
     let directionList = [];
-    if (canMove(ghost)) {
+    if (canMove(direction, index)) {
       for (let i = 0; i < 5; i++) {
-        directionList.push(ghost.direction);
+        directionList.push(direction);
+      }
+      if(difficulty){
+        directionList = directionList.concat(getIntermediateMoves(direction, index));
       }
     }
-    ghost.direction += 1;
-    if (ghost.direction > 3) {
-      ghost.direction = ghost.direction - 4;
+    direction += 1;
+    if (direction > 3) {
+      direction = direction - 4;
     }
     // To the right
-    if (canMove(ghost)) {
-      directionList.push(ghost.direction);
+    if (canMove(direction, index)) {
+      directionList.push(direction);
+      if(difficulty){
+        directionList = directionList.concat(getIntermediateMoves(direction, index));
+      }
     }
-    ghost.direction += 2;
-    if (ghost.direction > 3) {
-      ghost.direction = ghost.direction - 4;
+    direction += 2;
+    if (direction > 3) {
+      direction = direction - 4;
     }
     // To the left
-    if (canMove(ghost)) {
-      directionList.push(ghost.direction);
+    if (canMove(direction, index)) {
+      directionList.push(direction);
+      if(difficulty){
+        directionList = directionList.concat(getIntermediateMoves(direction, index));
+      }
     }
     let randomIndex = Math.floor(Math.random() * directionList.length);
     if (directionList.length > 0) {
@@ -699,26 +957,50 @@ function makeRandomMove(ghost) {
 }
 
 /*
- * Sets a slow path transition to the first cell outside of
+ * Sets a slow path transition to the first cell outside of the prison
  */
 function releaseGhost(ghostToRelease) {
+  var index, flashing;
+  if (ghostToRelease.name == "Inky") {
+    flashing = inkyPiece.flashing;
+    index = inkyPiece.index;
+  } else if (ghostToRelease.name == "Pinky") {
+    flashing = pinkyPiece.flashing;
+    index = pinkyPiece.index;
+  } else if (ghostToRelease.name == "Blinky") {
+    flashing = blinkyPiece.flashing;
+    index = blinkyPiece.index;
+  } else if (ghostToRelease.name == "Clyde") {
+    flashing = clydePiece.flashing;
+    index = clydePiece.index;
+  }
+  ghostToRelease.transitioning = true;
   var initialLives = pacmanPiece.lives;
-  //console.log("Releasing " + ghostToRelease.name);
-  ghostToRelease.freed = true;
-  gridElements[ghostToRelease.index].classList.remove(ghostToRelease.name);
+
+  gridElements[index].classList.remove(ghostToRelease.name);
+  gridElements[index].classList.remove("vulnerableGhost");
+
   ghostToRelease.index = 208;
+  index = 208;
   let count = 0;
-  //var element = gridElements[ghostToRelease.index];
-  gridElements[ghostToRelease.index].classList.add(ghostToRelease.name);
+
+  if (flashing == true) {
+    gridElements[index].classList.add("vulnerableGhost");
+  } else {
+    gridElements[index].classList.add(ghostToRelease.name);
+  }
   let smoothInterval = setInterval(() => {
     if (initialLives != pacmanPiece.lives) {
       clearInterval(smoothInterval);
       return;
     }
-    if (count == 0) {
+
+    /*if (count == 0) {
       ghostToRelease.index = 208;
-    }
+    }*/
     if (count == 3) {
+      ghostToRelease.freed = true;
+      ghostToRelease.transitioning = false;
       clearInterval(smoothInterval);
       let randomNum = Math.floor(Math.random() * 2);
       if (randomNum == 0) {
@@ -728,18 +1010,50 @@ function releaseGhost(ghostToRelease) {
       }
       if (ghostToRelease.intermediate == true) {
         //makeIntermediateMove(ghostToRelease)
-        makeRandomMove(ghostToRelease);
+        makeGhostMove(ghostToRelease);
         return;
       } else {
-        makeRandomMove(ghostToRelease);
+        makeGhostMove(ghostToRelease);
         return;
       }
     }
-    gridElements[ghostToRelease.index].classList.remove(ghostToRelease.name);
+    gridElements[index].classList.remove(ghostToRelease.name);
+    gridElements[index].classList.remove("vulnerableGhost");
+
     ghostToRelease.index -= 22;
-    gridElements[ghostToRelease.index].classList.add(ghostToRelease.name);
+    index -= 22;
+    if (ghostToRelease.flashing == true) {
+      gridElements[index].classList.add("vulnerableGhost");
+    } else {
+      gridElements[index].classList.add(ghostToRelease.name);
+    }
     count++;
   }, ghostToRelease.speed);
+}
+
+function makeGhostsVulnerable() {
+  if (!blinkyPiece.flashing) {
+    blinkyPiece.flashing = true;
+    inkyPiece.flashing = true;
+    pinkyPiece.flashing = true;
+    clydePiece.flashing = true;
+    var count = 0;
+    let vulnerableInterval = setInterval(() => {
+      if (count == 4) {
+        blinkyPiece.flashing = false;
+        inkyPiece.flashing = false;
+        pinkyPiece.flashing = false;
+        clydePiece.flashing = false;
+        clearInterval(vulnerableInterval);
+        return;
+      }
+      count++;
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      makeGhostsVulnerable();
+    }, 1000);
+  }
 }
 
 /*
@@ -754,6 +1068,8 @@ function releaseGhost(ghostToRelease) {
  */
 function moveSprite(spriteToMove) {
   gridElements[spriteToMove.index].classList.remove(spriteToMove.name);
+  gridElements[spriteToMove.index].classList.remove("vulnerableGhost");
+
   if (spriteToMove.direction == 0 && checkUp(spriteToMove.index)) {
     spriteToMove.index -= width;
   } else if (spriteToMove.direction == 1 && checkRight(spriteToMove.index)) {
@@ -772,14 +1088,32 @@ function moveSprite(spriteToMove) {
       pacmanPiece.pelletsThisRound += 1;
       document.getElementById("scoreCounter").innerText =
         "" + pacmanPiece.pelletseaten * 10;
+    } else if (
+      updatedClasses.contains("powerPellet") ||
+      updatedClasses.contains("hiddenPellet")
+    ) {
+      if (updatedClasses.contains("powerPellet")) {
+        updatedClasses.remove("powerPellet");
+      } else {
+        updatedClasses.remove("hiddenPellet");
+      }
+      makeGhostsVulnerable();
+      updatedClasses.add("travelledPath");
+      pacmanPiece.pelletseaten += 5;
+      document.getElementById("scoreCounter").innerText =
+        "" + pacmanPiece.pelletseaten * 10;
     }
   }
-  if (spriteToMove.index == 199 && spriteToMove.direction == 3) {
+  if (spriteToMove.index == 199) {
     spriteToMove.index = 219;
-  } else if (spriteToMove.index == 219 && spriteToMove.direction == 1) {
+  } else if (spriteToMove.index == 219) {
     spriteToMove.index = 199;
   }
-  gridElements[spriteToMove.index].classList.add(spriteToMove.name);
+  if (spriteToMove.type == "ghost" && spriteToMove.flashing == true) {
+    gridElements[spriteToMove.index].classList.add("vulnerableGhost");
+  } else {
+    gridElements[spriteToMove.index].classList.add(spriteToMove.name);
+  }
   checkGameStatus();
 }
 

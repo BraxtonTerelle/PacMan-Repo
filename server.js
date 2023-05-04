@@ -46,9 +46,11 @@ var gamePieceSchema = new Schema({
   intermediate: Boolean, // diff
   freed: Boolean, // init to false
   pelletseaten: Number, // pellets eaten init to 0
-  index: Number,
-  direction: Number,
-  pelletsThisRound: Number,
+  index: Number, // div index in 2d grid of boxes
+  direction: Number, // 0, 1, 2, or 3 for NESW directions
+  pelletsThisRound: Number, // # of pellets eaten on current life, not whole game
+  transitioning: Boolean, // Being manually moved by an interval or not
+  reset: Boolean, // Used to clear intervals
 });
 GamePiece = mongoose.model("GamePiece", gamePieceSchema);
 
@@ -64,7 +66,6 @@ var allTimeScoreboard = new Schema({
 });
 Scoreboard = mongoose.model("AllTimeScoreboard", allTimeScoreboard);
 
-
 // endpoint for customization of the game, sets a speed and difficulty for the game
 app.post("/add/custom/", (req, res) => {
   var data = req.body;
@@ -76,7 +77,6 @@ app.post("/add/custom/", (req, res) => {
   var gd2 = false;
   var gd3 = false;
   var gd4 = false;
-
 
   if (speed == "slow") {
     s = 450;
@@ -96,6 +96,7 @@ app.post("/add/custom/", (req, res) => {
   let p1 = User.findOne({ username: user }).exec();
   p1.then((result) => {
     result.pieces = [];
+    var queryList = [];
     // update all game pieces with new schema
     var pac = new GamePiece({
       type: "pacman",
@@ -108,8 +109,9 @@ app.post("/add/custom/", (req, res) => {
       pelletseaten: 0,
       index: 0,
       direction: -1,
+      transitioning: false,
     });
-    pac.save();
+    queryList.push(pac.save());
     result.pieces.push(pac._id);
 
     var g1 = new GamePiece({
@@ -123,8 +125,9 @@ app.post("/add/custom/", (req, res) => {
       pelletseaten: 0,
       index: 0,
       direction: -1,
+      transitioning: false,
     });
-    g1.save();
+    queryList.push(g1.save());
     result.pieces.push(g1._id);
 
     var g2 = new GamePiece({
@@ -138,8 +141,9 @@ app.post("/add/custom/", (req, res) => {
       pelletseaten: 0,
       index: 0,
       direction: -1,
+      transitioning: false,
     });
-    g2.save();
+    queryList.push(g2.save());
     result.pieces.push(g2._id);
 
     var g3 = new GamePiece({
@@ -153,8 +157,9 @@ app.post("/add/custom/", (req, res) => {
       pelletseaten: 0,
       index: 0,
       direction: -1,
+      transitioning: false,
     });
-    g3.save();
+    queryList.push(g3.save());
     result.pieces.push(g3._id);
 
     var g4 = new GamePiece({
@@ -168,12 +173,15 @@ app.post("/add/custom/", (req, res) => {
       pelletseaten: 0,
       index: 0,
       direction: -1,
+      transitioning: false,
     });
-    g4.save();
+    queryList.push(g4.save());
     result.pieces.push(g4._id);
 
-    result.save();
-    res.send("GOOD");
+    queryList.push(result.save());
+    Promise.all(queryList).then(()=>{
+      res.send("GOOD");
+    });
   }).catch((err) => {
     console.log(err);
   });
@@ -368,7 +376,6 @@ app.get("/begin/game/:USER", (req, res) => {
     });
 });
 
-
 // ends a game and updates a users scores
 app.get("/gameover/:USER/:PELLETS", (req, res) => {
   let u = req.params.USER;
@@ -401,8 +408,22 @@ app.get("/gameover/:USER/:PELLETS", (req, res) => {
   });
 });
 
-app.listen(port, () =>
-  console.log(`App listening at http://localhost:${port}`)
-);
-
-
+app.listen(port, () => {
+  /*var newboard = new Scoreboard({
+    TopTenPlayers: [
+    { name: "Sophia", score: 0 },
+    { name: "Mason", score: 0 },
+    { name: "Olivia", score: 0 },
+    { name: "Evelyn", score: 0 },
+    { name: "Noah", score: 0 },
+    { name: "Liam", score: 0 },
+    { name: "Harper", score: 0 },
+    { name: "Isabella", score: 0 },
+    { name: "Aiden", score: 0 },
+    { name: "Amelia", score: 0 }
+    ],
+    CurrentSize: 10
+});
+newboard.save();*/
+  console.log(`App listening at http://localhost:${port}`);
+});

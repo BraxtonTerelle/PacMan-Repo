@@ -36,6 +36,33 @@ h4{
   padding: 4px;
 }
 
+#endGamePopup{
+  display:flex;
+  flex-direction:column;
+  justify-content: space-evenly;
+  align-items:center;
+  width:500px;
+  height:300px;
+  border: 2px solid #005689;
+  border-radius:5px;
+
+}
+
+#endGameHeader{
+  font-size: 22px;
+  font-weight:bold;
+}
+
+.gameOverButton{
+  width:225px;
+  height:55px;
+  font-family: "Courier New", Courier, monospace;
+  text-align:center;
+  border: 1px solid black;
+  border-radius: 2px;
+  font-size: 1.25em;
+}
+
 #gameBody {
   position: fixed;
   top: 22%;
@@ -93,6 +120,7 @@ html {
 
 #scoreCounter{
   justify-content: center;
+  font-weight:bold;
 }
 
 h4{
@@ -162,6 +190,33 @@ h4{
   border-radius: 2px;
   background-color: pink;
   z-index:2;
+}
+
+.powerPellet {
+  width: 35px;
+  height: 35px;
+  background-color: black;
+  position: relative;
+}
+
+
+.powerPellet::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 6px;
+  background-color: pink;
+  z-index:2;
+}
+
+.hiddenPellet {
+  width: 35px;
+  height: 35px;
+  background-color: black;
 }
 
 .travelledPath {
@@ -254,6 +309,17 @@ h4{
   height: 35px;
   background: url("../images/Clyde_Icon.png");
   background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+  z-index:3;
+}
+
+.vulnerableGhost {
+  width: 35px;
+  height: 35px;
+  background: url("../images/Ghost_Icon.png");
+  background-color: black;
+  background-size: 35px;
   background-repeat: no-repeat;
   background-position: center center;
   z-index:3;
