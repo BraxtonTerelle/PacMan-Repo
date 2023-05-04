@@ -58,6 +58,10 @@ var madeAutoMove = false;
 var selectedSpeed = "";
 var selectedDifficulty = "";
 
+/*
+* Adds button handlers to setup settings screen buttons, disabling other
+* buttons when one is pressed and saving the user's selection
+*/
 function registerHandlers() {
   document
     .getElementById("startButton")
@@ -116,6 +120,11 @@ async function main() {
   registerHandlers();
 }
 
+/*
+* Switche the view from the setup page to the actual game screen,
+* adding the score counter at the top, pacman game in the middle, 
+* and lives counter at the bottom
+*/
 function switchViews() {
   var initialContainer = document.getElementById("popupContainer");
   if (initialContainer != null) {
@@ -151,6 +160,11 @@ function switchViews() {
   document.body.appendChild(livesCounter);
 }
 
+/*
+* Retrieves the saved speed and difficulty choices made by the user and
+* initialized a new game with these selections, synchronously waiting for
+* the game pieces to be created before showing the board and starting the round
+*/
 function interpretPopupResults() {
   if (selectedSpeed.length == 0 || selectedDifficulty.length == 0) {
     alert("Please select a speed and difficulty!");
@@ -182,6 +196,11 @@ function interpretPopupResults() {
   }
 }
 
+/*
+* Called once the game is over to remove the pacman screen
+* and lives/score counter divs, replacing them with a nice
+* end game screen that shows the user their final score
+*/
 function createEndGameWindow(didWin, pellets) {
   var endGamePopup = document.createElement("div");
   endGamePopup.id = "endGamePopup";
@@ -220,6 +239,11 @@ function createEndGameWindow(didWin, pellets) {
   document.body.appendChild(endGamePopup);
 }
 
+/*
+* Called when the game is over (either max pellets eaten or pacman lost
+* all of their lives), notifies the server that the game's over to destroy
+* the created game piece
+*/
 function gameOver(didWin, pellets) {
   var url = `http://localhost:3000/gameover/${username}/${pellets}`;
   fetch(url)
@@ -237,6 +261,10 @@ function gameOver(didWin, pellets) {
   }, 1500);
 }
 
+/*
+* Manually displays a line of text that counts down from 3 until the
+* game starts
+*/
 function showCountdownPopup() {
   var value = 3;
   var countdownText = document.createElement("h4");
@@ -253,6 +281,11 @@ function showCountdownPopup() {
   }, 1000);
 }
 
+
+/*
+* Initializes all necessary defaults for the game piece
+* values and calls spawnSprites to begin the game sequence
+*/
 function startRound() {
   pacmanPiece.index = 274;
   pacmanPiece.direction = -1;
@@ -652,6 +685,11 @@ function checkDown(index) {
   return false;
 }
 
+/*
+* Called when the pacman character loses a life, checks
+* if pacman is out of lives, if not reset the game screen
+* after a 1.5 second timeout and continue playing
+*/
 function lifeLostHelper() {
   if(pacmanPiece.lives==0){
     gameOver(false, pacmanPiece.pelletseaten);
@@ -673,6 +711,12 @@ function lifeLostHelper() {
   }, 1500);
 }
 
+/*
+* Handles sending a recently eaten ghost back to the
+* starting prison cage and idly moving the ghost for
+* 2 seconds before releasing it again to continue
+* chasing pacma
+*/
 function resetGhost(piece) {
   pacmanPiece.pelletseaten += 15;
   var initialLives = pacmanPiece.lives;
@@ -763,6 +807,13 @@ function resetGhost(piece) {
   }
 }
 
+/*
+* Returns true if the index of the pacman gamepiece is the
+* same as any of the ghost indexes, and calls lifeLostHelper
+* if the ghost aren't flashing. If they are flashing (meaning
+* they're vulnerable) call resetGhost to simulate eating them
+* and give pacman some bonus points
+*/
 function isTouchingGhost() {
   if (blinkyPiece.flashing == true) {
     if (pacmanPiece.index == blinkyPiece.index) {
@@ -846,6 +897,13 @@ function getYPos(element) {
   return rect.top;
 }
 
+/*
+* If the ghost is using an intermediate AI, use the x and y
+* positions of the ghost and pacman to help lead the ghost to
+* the pacman. If we can move up and pacman's y value indicates
+* he's above us, we'll put heavy bias on moving upwward by generating
+* 3 numbers in the same direction for the list
+*/
 function getIntermediateMoves(direction, index) {
    var directionList = [];
    var xPos = getXPos(gridElements[index]);
@@ -1031,6 +1089,12 @@ function releaseGhost(ghostToRelease) {
   }, ghostToRelease.speed);
 }
 
+/*
+* Makes ghosts vulnerable by setting their flashing
+* property to true if it isnt already. If its already
+* true, in the spirit of not wasting a power pellet we'll
+* just wait until the previous flashing sequence is done
+*/
 function makeGhostsVulnerable() {
   if (!blinkyPiece.flashing) {
     blinkyPiece.flashing = true;
@@ -1052,7 +1116,7 @@ function makeGhostsVulnerable() {
   } else {
     setTimeout(() => {
       makeGhostsVulnerable();
-    }, 1000);
+    }, 500);
   }
 }
 
